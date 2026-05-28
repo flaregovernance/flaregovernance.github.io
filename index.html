@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLR Airdrop — Claim Your Rewards | Flare Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
 
 <style>
   :root {
@@ -376,6 +377,33 @@ hero-section { padding: 2rem 1.25rem; }
   <section class="hero-section">
     <div class="flare-logo"></div>
     <h1>FLR Airdrop Claim</h1>
+
+ <div class="wrapper">
+    <div class="heading">AIRDROP ENDS IN</div>
+    <div class="timer" id="timer">
+      <div class="unit">
+        <div class="digit-box"><div class="digit" id="days">00</div></div>
+        <div class="label">Days</div>
+      </div>
+      <div class="separator">:</div>
+      <div class="unit">
+        <div class="digit-box"><div class="digit" id="hours">00</div></div>
+        <div class="label">Hours</div>
+      </div>
+      <div class="separator">:</div>
+      <div class="unit">
+        <div class="digit-box"><div class="digit" id="minutes">00</div></div>
+        <div class="label">Minutes</div>
+      </div>
+      <div class="separator">:</div>
+      <div class="unit">
+        <div class="digit-box"><div class="digit" id="seconds">00</div></div>
+        <div class="label">Seconds</div>
+      </div>
+    </div>
+    <div class="expired-text" id="expired">AIRDROP ENDED</div>
+  </div>
+
     <p class="subhead">
       Connect your wallet to verify eligibility and claim your FLR rewards.<br>
       This limited airdrop is available to early Flare Network participants and FTSO delegators.
@@ -586,6 +614,35 @@ hero-section { padding: 2rem 1.25rem; }
     if (connectBtn) connectBtn.addEventListener('click', connectWallet);
   });
 </script>
+
+<script>
+    const TARGET = new Date('September 30, 2026 23:59:59').getTime();
+    const pad = n => String(n).padStart(2, '0');
+
+    function tick() {
+      const now  = Date.now();
+      const diff = TARGET - now;
+
+      if (diff <= 0) {
+        document.getElementById('timer').style.display   = 'none';
+        document.getElementById('expired').style.display = 'block';
+        return;
+      }
+
+      const days    = Math.floor(diff / 86400000);
+      const hours   = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000)  / 60000);
+      const seconds = Math.floor((diff % 60000)    / 1000);
+
+      document.getElementById('days').textContent    = pad(days);
+      document.getElementById('hours').textContent   = pad(hours);
+      document.getElementById('minutes').textContent = pad(minutes);
+      document.getElementById('seconds').textContent = pad(seconds);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
 </body>
 </html>
