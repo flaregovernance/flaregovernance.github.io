@@ -349,6 +349,70 @@ hero-section { padding: 2rem 1.25rem; }
     .about-section h2 { font-size: 1.5rem; }
   }
 </style>
+
+
+<style>
+.wrapper {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.heading {
+  font-size: 14px; /* smaller heading */
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.timer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.digit-box {
+  background: #111;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.digit {
+  font-size: 24px; /* smaller digits */
+  font-weight: bold;
+  color: #fff;
+  min-width: 30px;
+  text-align: center;
+}
+
+.label {
+  font-size: 10px; /* smaller label */
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.separator {
+  font-size: 22px;
+  font-weight: bold;
+  padding-bottom: 14px; /* aligns with digits visually */
+  line-height: 1;
+}
+
+.expired-text {
+  font-size: 14px;
+  margin-top: 10px;
+  display: none; /* show this when the airdrop ends */
+}
+</style> 
 </head>
 <body>
 
