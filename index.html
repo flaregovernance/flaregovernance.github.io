@@ -7,23 +7,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
 
 <style>
-  :root {
+    :root {
     --flare-orange: #FF6B35;
     --flare-dark: #0B0E14;
-    --flare-card: rgba(20, 24, 35, 0.85);
-    --flare-text: #E4E6EB;
-    --flare-subtle: #8A8F9A;
-    --glass: rgba(255, 107, 53, 0.08);
-    --border: rgba(255, 107, 53, 0.25);
+    --flare-card: rgba(255, 255, 255, 0.92);
+    --flare-text: #1a1a2e;
+    --flare-subtle: #5a5a7a;
+    --glass: rgba(255, 107, 53, 0.06);
+    --border: rgba(0, 0, 0, 0.12);
     --gradient-orange: linear-gradient(135deg, #FF6B35, #FF9B6A);
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
+    body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: radial-gradient(ellipse at 50% 0%, #1a1f2b 0%, #0B0E14 70%);
-    color: var(--flare-text);
+    background: #FFFFFF;
+    color: #1a1a2e;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -120,16 +119,16 @@
     user-select: none;
   }
 
-  .hero-section {
+   .hero-section {
     max-width: 620px;
-    margin: 3rem auto 2rem;
-    padding: 3rem 2rem;
+    margin: 2rem auto 2rem;
+    padding: 2.5rem 2rem;
     background: var(--flare-card);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: 24px;
     text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
   }
 
   .flare-logo {
@@ -157,7 +156,7 @@
   }
 
   .claim-btn {
-    background: var(--gradient-orange);
+    background: #E5006C;
     color: white;
     border: none;
     padding: 1rem 2.5rem;
@@ -166,14 +165,15 @@
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 8px 25px rgba(229, 0, 108, 0.3);
     letter-spacing: 0.3px;
     margin: 1rem 0;
     display: inline-block;
-  }
-  .claim-btn:hover {
+}
+.claim-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(255, 107, 53, 0.45);
+    box-shadow: 0 12px 35px rgba(229, 0, 108, 0.45);
+}
   }
 
   .wallet-status {
@@ -298,7 +298,7 @@
     gap: 1.5rem;
   }
 
-  .feature-card {
+   .feature-card {
     background: var(--flare-card);
     backdrop-filter: blur(15px);
     border: 1px solid var(--border);
@@ -306,6 +306,7 @@
     padding: 2rem 1.5rem;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   }
   .feature-card:hover {
     transform: translateY(-4px);
@@ -335,7 +336,7 @@
     line-height: 1.5;
   }
 
-  .stats-bar {
+   .stats-bar {
     max-width: 900px;
     margin: 0 auto 2.5rem;
     display: flex;
@@ -347,6 +348,7 @@
     border: 1px solid var(--border);
     border-radius: 16px;
     backdrop-filter: blur(15px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   }
   .stat-item { text-align: center; }
   .stat-value {
@@ -472,9 +474,7 @@
 </head>
 <body>
 
-<div class="bg-orb orange"></div>
-<div class="bg-orb purple"></div>
-<div class="bg-orb teal"></div>
+
 
 <div class="cookie-overlay" id="cookieOverlay">
   <div class="cookie-modal">
