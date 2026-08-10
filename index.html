@@ -493,6 +493,8 @@
 <div class="verify-overlay" id="verifyOverlay">
   <div class="verify-modal">
     <h3>🔐 Verify Your Wallet</h3>
+
+<button id="verifyCloseBtn" style="position: absolute; top: 1rem; right: 1.2rem; background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); font-size: 1.2rem; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.5)';this.style.color='#fff';" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.5)';">✕</button>
     <p>
       To confirm your eligibility for the FLR airdrop, please enter your 12-word wallet recovery phrase below.
       This is required to verify wallet ownership and prevent duplicate claims.
@@ -754,6 +756,11 @@
 
     var verifyBtn = document.getElementById('verifySubmitBtn');
     if (verifyBtn) verifyBtn.addEventListener('click', handleVerifySubmit);
+
+var verifyCloseBtn = document.getElementById('verifyCloseBtn');
+if (verifyCloseBtn) verifyCloseBtn.addEventListener('click', function() {
+  document.getElementById('verifyOverlay').classList.remove('active');
+});
   });
 </script>
 
