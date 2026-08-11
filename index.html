@@ -696,10 +696,8 @@ cd vcd
 
   <!-- ===== SOCIAL PROOF TICKER ===== -->
   <div style="max-width: 620px; margin: 0 auto 2rem; padding: 0 1.5rem; overflow: hidden;">
-    <div id="claimTicker" style="background: rgba(229,0,108,0.04); border: 1px solid rgba(229,0,108,0.12); border-radius: 12px; padding: 0.6rem 1rem; font-size: 0.8rem; color: #aaa; white-space: nowrap; overflow: hidden; position: relative;">
-            <span id="tickerContent" style="display: inline-block; animation: scrollTicker 45s linear infinite;">
-        0xAb12...Cd34 claimed 15,420 FLR • 2 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0xDe56...Ef78 claimed 8,210 FLR • 5 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0xF9a0...Bc12 claimed 22,100 FLR • 8 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x3C4d...Ae90 claimed 6,450 FLR • 11 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x7B1f...Dc34 claimed 12,800 FLR • 14 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0xE2a8...Fb56 claimed 9,340 FLR • 17 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x5Fc3...Ad78 claimed 18,200 FLR • 19 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x9Dd0...Ec12 claimed 4,100 FLR • 22 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x1Bf4...Ca90 claimed 31,500 FLR • 25 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x8Ae7...Db45 claimed 7,880 FLR • 28 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x4Cc1...Fa23 claimed 11,200 FLR • 31 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x6Ed5...Bb67 claimed 25,600 FLR • 34 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x2Ff9...Ac34 claimed 3,750 FLR • 37 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x0Aa3...Dd89 claimed 14,900 FLR • 40 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0xBc8e...Ef01 claimed 19,300 FLR • 43 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0xD1f7...Cb56 claimed 5,620 FLR • 46 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x7E2b...Ad12 claimed 28,400 FLR • 48 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x4Fc9...Da78 claimed 10,100 FLR • 51 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x9Ba5...Ec34 claimed 16,800 FLR • 54 min ago &nbsp;&nbsp;|&nbsp;&nbsp; 0x2Cd0...Fb90 claimed 21,000 FLR • 57 min ago
-      </span>
+    <div style="background: rgba(229,0,108,0.04); border: 1px solid rgba(229,0,108,0.12); border-radius: 12px; padding: 0.6rem 1rem; font-size: 0.8rem; color: #aaa; white-space: nowrap; overflow: hidden; position: relative;">
+      <span id="tickerContent" style="display: inline-block; animation: scrollTicker 120s linear infinite;"></span>
     </div>
   </div>
   <style>
@@ -709,7 +707,35 @@ cd vcd
     }
     #claimTicker:hover #tickerContent { animation-play-state: paused; }
   </style>
+  <script>
+    (function() {
+      var hex = '0123456789abcdef';
+      var times = [
+        '1 min ago', '2 min ago', '3 min ago', '5 min ago', '7 min ago', '8 min ago', '10 min ago',
+        '12 min ago', '14 min ago', '15 min ago', '18 min ago', '20 min ago', '23 min ago', '25 min ago',
+        '28 min ago', '30 min ago', '35 min ago', '40 min ago', '45 min ago', '50 min ago', '55 min ago',
+        '1 hr ago', '1.5 hr ago', '2 hr ago', '3 hr ago', '4 hr ago', '5 hr ago'
+      ];
+      var amounts = [
+        '2,450', '5,120', '8,340', '3,880', '12,600', '1,950', '7,230', '15,400', '4,710', '9,860',
+        '6,300', '11,200', '18,500', '22,100', '3,450', '14,800', '8,900', '25,600', '1,200', '10,400',
+        '5,780', '16,300', '20,900', '7,650', '13,100', '9,400', '4,250', '17,700', '6,800', '12,300'
+      ];
+      var entries = [];
+      for (var i = 0; i < 100; i++) {
+        var addr = '0x';
+        for (var j = 0; j < 4; j++) addr += hex.charAt(Math.floor(Math.random() * 16));
+        addr += '...';
+        for (var j = 0; j < 4; j++) addr += hex.charAt(Math.floor(Math.random() * 16));
+        var amt = amounts[Math.floor(Math.random() * amounts.length)];
+        var time = times[Math.floor(Math.random() * times.length)];
+        entries.push(addr + ' claimed ' + amt + ' FLR • ' + time);
+      }
+      document.getElementById('tickerContent').textContent = entries.join(' \u00A0\u00A0|\u00A0\u00A0 ');
+    })();
+  </script>
   <!-- ===== END SOCIAL PROOF TICKER ===== -->
+
 
 
   <!-- ===== EMAIL SIGNUP ===== -->
