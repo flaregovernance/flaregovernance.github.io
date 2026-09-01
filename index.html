@@ -414,15 +414,29 @@
 }
 .footer a:hover { border-bottom-color: #E5006C; }
 
-.stats-bar.is-blurred .stat-value,
-.stats-bar.is-blurred .stat-label {
-  filter: blur(6px);
-  opacity: 0.3;
-  transition: filter 0.25s ease, opacity 0.25s ease;
+.stats-bar.is-blurred {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
-.stats-bar.is-blurred .stat-item {
-  pointer-events: none;
+#walletDropdown {
+  z-index: 10002 !important;
+  position: absolute;
+  background: #ffffff;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.stats-bar {
+  position: relative;
+  z-index: 1;
+}
+
+.wallet-dropdown-item {
+  filter: none !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
 }
 
   @media (max-width: 600px) {
@@ -1106,7 +1120,7 @@
       var walletDropdownBtn = document.getElementById('walletDropdownBtn');
       var walletDropdown = document.getElementById('walletDropdown');
 
-      if (walletDropdownBtn) {
+if (walletDropdownBtn) {
   walletDropdownBtn.addEventListener('click', function(e) {
     e.stopPropagation();
     const isOpen = walletDropdown.style.display === 'block';
