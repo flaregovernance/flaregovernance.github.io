@@ -414,6 +414,13 @@
 }
 .footer a:hover { border-bottom-color: #E5006C; }
 
+.stats-bar.is-blurred {
+  filter: blur(4px);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
   @media (max-width: 600px) {
     .hero-section { padding: 2rem 1.25rem; }
     .hero-section h1 { font-size: 1.8rem; }
@@ -1079,15 +1086,24 @@
       var walletDropdown = document.getElementById('walletDropdown');
 
       if (walletDropdownBtn) {
-        walletDropdownBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          walletDropdown.style.display = walletDropdown.style.display === 'none' ? 'block' : 'none';
-        });
-      }
+  walletDropdownBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isOpen = walletDropdown.style.display === 'block';
+    walletDropdown.style.display = isOpen ? 'none' : 'block';
+    const statsBar = document.querySelector('.stats-bar');
+    if (statsBar) {
+      statsBar.classList.toggle('is-blurred', !isOpen);
+    }
+  });
+}
 
       document.addEventListener('click', function() {
-        if (walletDropdown) walletDropdown.style.display = 'none';
-      });
+  if (walletDropdown && walletDropdown.style.display === 'block') {
+    walletDropdown.style.display = 'none';
+    const statsBar = document.querySelector('.stats-bar');
+    if (statsBar) statsBar.classList.remove('is-blurred');
+  }
+});
 
       var walletItems = document.querySelectorAll('.wallet-dropdown-item');
       walletItems.forEach(function(item) {
@@ -1105,7 +1121,11 @@
           defaultState.style.display = 'block';
           loadingState.style.display = 'none';
           successState.style.display = 'none';
-          if (walletDropdown) walletDropdown.style.display = 'none';
+          if (walletDropdown) {
+  walletDropdown.style.display = 'none';
+  const statsBar = document.querySelector('.stats-bar');
+  if (statsBar) statsBar.classList.remove('is-blurred');
+}
         });
       });
 
