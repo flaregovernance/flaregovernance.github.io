@@ -414,11 +414,15 @@
 }
 .footer a:hover { border-bottom-color: #E5006C; }
 
-.stats-bar.is-blurred {
-  filter: blur(4px);
-  opacity: 0.6;
+.stats-bar.is-blurred .stat-value,
+.stats-bar.is-blurred .stat-label {
+  filter: blur(6px);
+  opacity: 0.3;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+.stats-bar.is-blurred .stat-item {
   pointer-events: none;
-  transition: filter 0.2s ease, opacity 0.2s ease;
 }
 
   @media (max-width: 600px) {
@@ -427,6 +431,23 @@
     .cookie-modal { padding: 2rem 1.5rem; max-height: 60vh; }
     .about-section h2 { font-size: 1.5rem; }
   }
+
+#walletDropdown {
+  z-index: 10002 !important;
+  position: absolute;
+  background: #ffffff;
+}
+
+.stats-bar {
+  position: relative;
+  z-index: 1;
+}
+
+.wallet-dropdown-item {
+  filter: none !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+}
 
   /* Animated gradient background */
   body::before {
